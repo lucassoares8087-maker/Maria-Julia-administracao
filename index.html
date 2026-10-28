@@ -13,5 +13,12 @@
 <body>
   <p>Abrindo o painel administrativo… <a href="admin.html">Toque aqui se não abrir automaticamente.</a></p>
   <script>location.replace('admin.html');</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js");
+  });
+}
+</script>
 </body>
 </html>
