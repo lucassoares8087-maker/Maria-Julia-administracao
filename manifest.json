@@ -1,0 +1,17 @@
+{
+  "id": "./admin.html",
+  "name": "Maria Julia Bolos e Doces - Administração",
+  "short_name": "MJ Administração",
+  "description": "Painel administrativo da Maria Julia Bolos e Doces",
+  "lang": "pt-BR",
+  "start_url": "./admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff3f8",
+  "theme_color": "#e85d91",
+  "icons": [
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"}
+  ]
+}

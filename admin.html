@@ -1,0 +1,832 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e85d91">
+<meta name="description" content="Painel administrativo da Maria Julia Bolos e Doces">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>MARIA JULIA BOLOS E DOCES</title>
+<style>
+:root{--pink:#e85d91;--light:#fff0f6;--dark:#61263f;--white:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:#fff3f8;color:var(--dark);font-family:Arial,sans-serif;position:relative;min-height:100vh} body::before{content:'';position:fixed;inset:0;background-image:url('marca-dagua-cartoon.png');background-repeat:no-repeat;background-position:right 42% center;background-size:min(125vw,820px) auto;opacity:.30;pointer-events:none;z-index:0} body>*{position:relative;z-index:1}
+header{background:linear-gradient(135deg,#ed6d9e,#c83d78);color:white;padding:25px 18px;border-radius:0 0 25px 25px}
+header h1{margin:0;font-size:clamp(21px,5.2vw,30px);line-height:1.12;padding-right:78px}
+header p{margin:7px 0 0;font-size:clamp(14px,3.8vw,18px)}
+main{padding:16px;max-width:650px;margin:auto}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card,.panel{background:rgba(255,255,255,.78);backdrop-filter:blur(1.5px);padding:16px;border-radius:20px;box-shadow:0 3px 15px #8b315014;margin-bottom:14px}
+.card{position:relative;min-height:108px;padding-right:76px}.card .card-icon{position:absolute;right:14px;top:30px;width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 2px 2px #c83d7830)}
+.card small{display:block;color:#91677a;margin-bottom:9px}
+.card strong{font-size:23px;color:var(--pink)}
+h2{font-size:18px;margin:4px 0 14px}
+input,button,select{width:100%;padding:12px;border-radius:10px;font-size:15px}
+input,select{border:1px solid #efc8d8;background:white;margin:5px 0 10px;color:#61263f}
+button{border:0;background:var(--pink);color:white;font-weight:bold;margin:5px 0;cursor:pointer}
+button.secondary{background:var(--light);color:#a62f64}
+button.danger{background:#a83252}
+nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:18px 0}
+nav button{width:100%;min-width:0;min-height:82px;padding:10px 5px;font-size:clamp(11px,3.1vw,14px);line-height:1.15;text-align:center;white-space:normal;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow-wrap:normal;word-break:normal;hyphens:none;border-radius:16px;gap:7px}nav button span{font-size:32px;line-height:1;display:block;font-weight:normal} .quick-icon{display:inline-flex;align-items:center;justify-content:center;width:58px;min-width:58px;font-size:34px;line-height:1} .quick-action{display:flex;align-items:center;justify-content:center;gap:12px;min-height:70px;font-size:clamp(14px,3.7vw,18px)} .quick-action .quick-label{flex:1;text-align:center} .cards .card small{font-size:clamp(13px,3.5vw,16px)}
+.item{padding:12px 0;border-bottom:1px solid #f5dce6}
+.item:last-child{border:0}
+.item strong{display:block;margin-bottom:5px}
+.muted{color:#987789;font-size:13px}
+.money{color:#c83d78;font-weight:bold}
+.hidden{display:none}
+.financeiro-resumo{display:grid;grid-template-columns:1fr;gap:10px;margin:12px 0 18px}
+.financeiro-metrica{background:#fff0f6;border:1px solid #f6d5e2;border-radius:14px;padding:14px}
+.financeiro-metrica small{display:block;color:#91677a;margin-bottom:6px}
+.financeiro-metrica strong{font-size:22px;color:#c83d78}
+.grafico-legenda{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#91677a;margin:8px 0 14px}
+.grafico-legenda span{display:inline-flex;align-items:center;gap:5px}
+.grafico-cor{display:inline-block;width:10px;height:10px;border-radius:3px}
+.grafico-dia{margin:12px 0;padding-bottom:12px;border-bottom:1px solid #f5dce6}
+.grafico-dia:last-child{border:0}
+.grafico-dia-titulo{display:flex;justify-content:space-between;gap:8px;font-size:13px;margin-bottom:7px}
+.barra-linha{display:grid;grid-template-columns:78px 1fr auto;gap:7px;align-items:center;margin:5px 0;font-size:12px}
+.barra-fundo{height:12px;background:#f8e5ed;border-radius:99px;overflow:hidden}
+.barra{height:100%;min-width:0;border-radius:99px}
+.barra.compras{background:#e85d91}.barra.recebidos{background:#39a875}
+@media(min-width:520px){.financeiro-resumo{grid-template-columns:repeat(3,minmax(0,1fr))}.financeiro-metrica strong{font-size:19px}}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+footer{text-align:center;color:#a98998;font-size:12px;padding:20px}
+select#descricaoCompra {
+  background: #fff0f6;
+  color: #a8326b;
+  border: 2px solid #e85d91;
+  border-radius: 14px;
+  font-weight: 600;
+  padding: 14px;
+  box-shadow: 0 3px 10px rgba(232, 93, 145, 0.12);
+}
+.doces-opcoes { display:grid; gap:10px; margin:10px 0 18px; }
+.doce-opcao { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; padding:12px; border:2px solid #f4a6c5; border-radius:14px; background:#fff0f6; color:#8c2856; font-size:15px; font-weight:bold; }
+.doce-info { display:flex; flex-direction:column; gap:5px; min-width:0; }
+.doce-preco { color:#d9437e; font-size:14px; white-space:nowrap; }
+.doce-quantidade { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.doce-quantidade button { width:38px; height:38px; padding:0; margin:0; border-radius:10px; font-size:22px; }
+.doce-quantidade .menos { background:#f6cddd; color:#8c2856; }
+.doce-quantidade .mais { background:#e85d91; color:white; }
+.doce-quantidade output { min-width:18px; text-align:center; font-size:16px; }
+.resumo-quantidades { color:#91677a; font-size:13px; margin:0 0 12px; }
+#loginTela { max-width:520px; margin:35px auto; padding:20px; }
+.login-card { background:white; padding:22px; border-radius:18px; box-shadow:0 3px 15px #8b315014; }
+.login-card h1 { color:#c83d78; margin-top:0; }
+#loginMensagem { min-height:20px; color:#a83252; font-size:14px; }
+#btnSair { width:auto; float:right; background:#fff0f6; color:#a62f64; padding:8px 12px; margin:0; }
+body:not(.autenticado) header, body:not(.autenticado) main, body:not(.autenticado) footer { display:none; }
+body.autenticado #loginTela { display:none; }
+</style>
+</head>
+<body>
+<section id="loginTela">
+  <div class="login-card">
+    <h1>🍰 MARIA JULIA BOLOS E DOCES</h1>
+    <p>Acesso administrativo</p>
+    <label>E-mail</label>
+    <input id="loginEmail" type="email" autocomplete="username" placeholder="E-mail do administrador">
+    <label>Senha</label>
+    <input id="loginSenha" type="password" autocomplete="current-password" placeholder="Senha">
+    <button id="btnEntrar" type="button">Entrar</button>
+    <p id="loginMensagem" role="status"></p>
+  </div>
+</section>
+<header>
+<button id="btnSair" type="button">Sair</button><h1>🍰 MARIA JULIA BOLOS E DOCES</h1>
+<p>Controle de clientes e contas a receber • dados sincronizados</p>
+</header>
+<main>
+<div class="cards">
+<div class="card"><small>Total a receber</small><strong id="total">R$ 0,00</strong><span class="card-icon" aria-hidden="true" style="font-size:52px;line-height:1">💰</span></div>
+<div class="card"><small>Clientes devendo</small><strong id="quantidade">0</strong><span class="card-icon" aria-hidden="true" style="font-size:48px;line-height:1">👥</span></div>
+</div>
+<nav>
+<button onclick="aba('inicio')"><span aria-hidden="true">⌂</span> Início</button>
+<button onclick="aba('clientes')"><span aria-hidden="true">♟</span> Clientes</button>
+<button onclick="aba('pedidos'); carregarPedidos()"><span aria-hidden="true">▤</span> Pedidos</button>
+<button onclick="aba('disponibilidade'); carregarDisponibilidade()"><span aria-hidden="true">▦</span> Disponibilidade</button>
+<button onclick="aba('historico')"><span aria-hidden="true">◷</span> Histórico</button>
+<button onclick="aba('relatorios')"><span aria-hidden="true">▥</span> Relatórios</button>
+</nav>
+
+<section id="inicio">
+<div class="panel">
+<h2>✨ Acesso rápido</h2>
+<button class="quick-action" onclick="aba('novoCliente')"><span class="quick-icon" aria-hidden="true">👤➕</span><span class="quick-label">+ Cadastrar cliente</span></button>
+<button class="secondary quick-action" onclick="aba('novaCompra')"><span class="quick-icon" aria-hidden="true">🛒</span><span class="quick-label">+ Registrar compra</span></button>
+<button class="secondary quick-action" onclick="aba('pagamento')"><span class="quick-icon" aria-hidden="true">💳</span><span class="quick-label">+ Registrar pagamento</span></button>
+</div>
+<div class="panel">
+<h2>Clientes com saldo pendente</h2>
+<div id="pendentes"></div>
+</div>
+</section>
+
+<section id="clientes" class="hidden">
+<div class="panel">
+<h2>Meus clientes</h2>
+<input id="busca" placeholder="Buscar cliente pelo nome..." oninput="listarClientes()">
+<div id="listaClientes"></div>
+<button onclick="aba('novoCliente')">+ Novo cliente</button>
+</div>
+</section>
+
+<section id="novoCliente" class="hidden">
+<div class="panel">
+<h2>Cadastrar cliente</h2>
+<label>Nome completo</label>
+<input id="nomeCliente" placeholder="Nome do cliente">
+<label>WhatsApp do cliente</label>
+<input id="foneCliente" placeholder="(44) 99999-9999" inputmode="tel" required>
+<button onclick="cadastrarCliente()">Salvar cliente</button>
+<button class="secondary" onclick="aba('clientes')">Cancelar</button>
+</div>
+</section>
+
+<section id="novaCompra" class="hidden">
+<div class="panel">
+<h2>Registrar compra / dívida</h2>
+<label>Cliente</label><select id="clienteCompra"></select>
+<label>Doce</label>
+<div class="doces-opcoes">
+  <div class="doce-opcao"><div class="doce-info"><span>🍫 Brigadeiro</span><span class="doce-preco">R$ 3,00 cada</span></div><div class="doce-quantidade"><button type="button" class="menos" onclick="alterarQuantidade('Brigadeiro',-1)" aria-label="Diminuir Brigadeiro">−</button><output id="qtd-Brigadeiro">0</output><button type="button" class="mais" onclick="alterarQuantidade('Brigadeiro',1)" aria-label="Adicionar Brigadeiro">+</button></div></div>
+  <div class="doce-opcao"><div class="doce-info"><span>🥥 Beijinho</span><span class="doce-preco">R$ 3,00 cada</span></div><div class="doce-quantidade"><button type="button" class="menos" onclick="alterarQuantidade('Beijinho',-1)" aria-label="Diminuir Beijinho">−</button><output id="qtd-Beijinho">0</output><button type="button" class="mais" onclick="alterarQuantidade('Beijinho',1)" aria-label="Adicionar Beijinho">+</button></div></div>
+  <div class="doce-opcao"><div class="doce-info"><span>🍰 Bolo no pote</span><span class="doce-preco">R$ 8,00 cada</span></div><div class="doce-quantidade"><button type="button" class="menos" onclick="alterarQuantidade('Bolo no pote',-1)" aria-label="Diminuir Bolo no pote">−</button><output id="qtd-Bolo no pote">0</output><button type="button" class="mais" onclick="alterarQuantidade('Bolo no pote',1)" aria-label="Adicionar Bolo no pote">+</button></div></div>
+  <div class="doce-opcao"><div class="doce-info"><span>🍬 Trufa</span><span class="doce-preco">R$ 5,00 cada</span></div><div class="doce-quantidade"><button type="button" class="menos" onclick="alterarQuantidade('Trufa',-1)" aria-label="Diminuir Trufa">−</button><output id="qtd-Trufa">0</output><button type="button" class="mais" onclick="alterarQuantidade('Trufa',1)" aria-label="Adicionar Trufa">+</button></div></div>
+</div>
+<p id="resumoQuantidades" class="resumo-quantidades">Nenhum doce selecionado.</p>
+<select id="descricaoCompra" onchange="atualizarPrecoDoce()" hidden>
+  <option value="">Selecione um doce</option>
+  <option value="Brigadeiro" data-preco="3">Brigadeiro</option>
+  <option value="Beijinho" data-preco="3">Beijinho</option>
+  <option value="Bolo no pote" data-preco="8">Bolo no pote</option>
+  <option value="Trufa" data-preco="5">Trufa</option>
+</select>
+</>
+<div class="row">
+<div><label>Valor (R$)</label><input id="valorCompra" type="number" min="0.01" step="0.01" placeholder="0,00"></div>
+<div><label>Data</label><input id="dataCompra" type="date"></div>
+</div>
+<button onclick="cadastrarCompra()">Salvar compra</button>
+</div>
+</section>
+
+<section id="pagamento" class="hidden">
+<div class="panel">
+<h2>Registrar pagamento</h2>
+<label>Cliente</label><select id="clientePagamento" onchange="mostrarSaldo()"></select>
+<p id="saldoCliente" class="muted">Selecione um cliente para ver o saldo.</p>
+<label>Valor recebido (R$)</label><input id="valorPagamento" type="number" min="0.01" step="0.01" placeholder="0,00">
+<label>Data</label><input id="dataPagamento" type="date">
+<button onclick="cadastrarPagamento()">Confirmar pagamento</button>
+</div>
+</section>
+
+<section id="pedidos" class="hidden">
+  <div class="panel">
+    <h2>Pedidos do cardápio</h2>
+    <p class="muted">Pedidos recebidos pelo cardápio online. Aceitar aqui não registra dívida automaticamente.</p>
+    <button type="button" onclick="carregarPedidos()">Atualizar pedidos</button>
+    <div id="listaPedidos"><p class="muted">Toque em “Atualizar pedidos” para carregar.</p></div>
+  </div>
+</section>
+
+
+<section id="disponibilidade" class="hidden">
+ <div class="panel">
+  <h2>Disponibilidade dos doces</h2>
+  <p class="muted">Escolha a data e marque os doces que estarão disponíveis no cardápio dos clientes.</p>
+  <label for="dataDisponibilidade">Data</label>
+  <input id="dataDisponibilidade" type="date">
+  <div id="listaDisponibilidade"></div>
+  <button type="button" onclick="salvarDisponibilidade()">Salvar disponibilidade desta data</button>
+  <p id="msgDisponibilidade" class="muted"></p>
+ </div>
+</section>
+
+<section id="historico" class="hidden">
+<div class="panel"><h2>Histórico de movimentações</h2><div id="listaHistorico"></div></div>
+</section>
+
+<section id="relatorios" class="hidden">
+<div class="panel">
+<h2>Relatório financeiro</h2>
+<p class="muted" id="dataRelatorio">Resumo de hoje</p>
+<div class="financeiro-resumo">
+  <div class="financeiro-metrica"><small>Valor pendente a receber</small><strong id="saldoRelatorio">R$ 0,00</strong></div>
+  <div class="financeiro-metrica"><small>Recebido hoje</small><strong id="totalRecebido">R$ 0,00</strong></div>
+  <div class="financeiro-metrica"><small>Total de compras hoje</small><strong id="totalCompras">R$ 0,00</strong></div>
+</div>
+<h2>Movimentação por dia — últimos 7 dias</h2>
+<div class="grafico-legenda"><span><i class="grafico-cor" style="background:#e85d91"></i>Compras</span><span><i class="grafico-cor" style="background:#39a875"></i>Pagamentos recebidos</span></div>
+<div id="graficoFinanceiro"><p class="muted">Carregando movimentações...</p></div>
+</div>
+</section>
+
+<section id="detalhe" class="hidden">
+<div class="panel">
+<h2 id="tituloDetalhe">Detalhes do cliente</h2>
+<div id="infoDetalhe"></div>
+<button onclick="aba('novaCompra')">+ Nova compra</button>
+<button class="secondary" onclick="aba('pagamento')">+ Pagamento</button>
+<button class="secondary" onclick="aba('historico')">Ver histórico geral</button>
+</div>
+</section>
+<footer>MARIA JULIA BOLOS E DOCES • Controle financeiro</footer>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyBYOsyN7GbPImcOoydtUkDDCqjdeljmbc8",
+  authDomain: "mj-confeitaria.firebaseapp.com",
+  projectId: "mj-confeitaria",
+  storageBucket: "mj-confeitaria.firebasestorage.app",
+  messagingSenderId: "1019079862908",
+  appId: "1:1019079862908:web:faf7dc61261af4c60837f9"
+};
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+let usuarioAutenticado = null;
+let pedidosOnlineCache = [];
+let filaSalvamento = Promise.resolve();
+const chave='mj_confeitaria_v1';
+let dados;
+try{dados=JSON.parse(localStorage.getItem(chave))||{clientes:[],movimentos:[]}}
+catch(e){dados={clientes:[],movimentos:[]}}
+let clienteAtual=null;
+
+function salvar(){
+  localStorage.setItem(chave,JSON.stringify(dados));
+  atualizar();
+  if(!usuarioAutenticado) return;
+  const copia = JSON.parse(JSON.stringify(dados));
+  filaSalvamento = filaSalvamento.then(() => setDoc(doc(db,'appData',usuarioAutenticado.uid), copia))
+    .catch(err => { console.error(err); alert('Não foi possível sincronizar com a nuvem. Confira sua conexão e as regras do Firestore.'); });
+}
+function reais(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+function escapar(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function saldo(id){return dados.movimentos.filter(m=>m.cliente===id).reduce((s,m)=>s+(m.tipo==='compra'?m.valor:-m.valor),0)}
+function aba(id){
+document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+if(id==='novaCompra'||id==='pagamento')preencherSelects();
+if(id==='pagamento')mostrarSaldo();
+if(id==='detalhe')mostrarDetalhe();
+}
+async function cadastrarCliente(){
+let nome=document.getElementById('nomeCliente').value.trim();
+let fone=document.getElementById('foneCliente').value.trim();
+const telefoneLimpo=fone.replace(/\D/g,'');
+if(!nome)return alert('Digite o nome do cliente.');
+if(telefoneLimpo.length<10 || telefoneLimpo.length>13)return alert('Informe um WhatsApp válido com DDD. Exemplo: (44) 99999-9999.');
+if(!usuarioAutenticado)return alert('Entre no painel administrativo antes de cadastrar clientes.');
+// Evita duplicar o mesmo cadastro quando o telefone já existe.
+const existente=dados.clientes.find(c=>String(c.fone||'').replace(/\D/g,'').replace(/^55/,'')===telefoneLimpo.replace(/^55/,''));
+if(existente){
+  existente.nome=nome;
+  existente.fone=fone;
+}else{
+  dados.clientes.push({id:Date.now().toString()+Math.random().toString(16).slice(2),nome,fone});
+}
+try{
+  const copia=JSON.parse(JSON.stringify(dados));
+  await setDoc(doc(db,'appData',usuarioAutenticado.uid),copia);
+  localStorage.setItem(chave,JSON.stringify(dados));
+  document.getElementById('nomeCliente').value='';
+  document.getElementById('foneCliente').value='';
+  atualizar();aba('clientes');alert(existente?'Cadastro do cliente atualizado e salvo no banco de dados!':'Cliente cadastrado e salvo no banco de dados!');
+}catch(e){
+  console.error(e);
+  alert('Não consegui salvar o cliente no banco de dados. Confira a conexão e tente novamente. ('+(e.code||'erro')+')');
+}
+}
+function preencherSelects(){
+['clienteCompra','clientePagamento'].forEach(id=>{
+let el=document.getElementById(id),anterior=el.value;
+el.innerHTML='<option value="">Selecione um cliente</option>'+dados.clientes.map(c=>`<option value="${c.id}">${escapar(c.nome)}</option>`).join('');
+if(dados.clientes.some(c=>c.id===anterior))el.value=anterior;
+});
+}
+function atualizarPrecoDoce(){ atualizarResumoDoces(); }
+
+const quantidadesDoces = {'Brigadeiro':0,'Beijinho':0,'Bolo no pote':0,'Trufa':0};
+const precosDoces = {'Brigadeiro':3,'Beijinho':3,'Bolo no pote':8,'Trufa':5};
+
+function alterarQuantidade(nome, variacao){
+  quantidadesDoces[nome] = Math.max(0, (quantidadesDoces[nome] || 0) + variacao);
+  atualizarResumoDoces();
+}
+function atualizarResumoDoces(){
+  let total = 0, unidades = 0;
+  const descricoes = [];
+  Object.keys(quantidadesDoces).forEach(nome => {
+    const qtd = quantidadesDoces[nome] || 0;
+    const output = document.getElementById('qtd-' + nome);
+    if(output) output.textContent = qtd;
+    if(qtd > 0){ total += qtd * precosDoces[nome]; unidades += qtd; descricoes.push(qtd + 'x ' + nome); }
+  });
+  document.getElementById('valorCompra').value = total > 0 ? total.toFixed(2) : '';
+  const resumo = document.getElementById('resumoQuantidades');
+  if(resumo) resumo.textContent = unidades > 0
+    ? unidades + (unidades === 1 ? ' unidade selecionada • ' : ' unidades selecionadas • ') + descricoes.join(', ') + ' • Total: ' + reais(total)
+    : 'Nenhum doce selecionado.';
+}
+function alternarDoce(nome, preco){ alterarQuantidade(nome, 1); }
+
+function cadastrarCompra(){
+  const id = document.getElementById('clienteCompra').value;
+  const data = document.getElementById('dataCompra').value;
+  if(!id) return alert('Selecione um cliente.');
+  const selecionados = Object.keys(quantidadesDoces).filter(nome => quantidadesDoces[nome] > 0);
+  if(selecionados.length === 0) return alert('Selecione pelo menos um doce.');
+  if(!data) return alert('Informe a data.');
+
+  const descricao = selecionados.map(nome => quantidadesDoces[nome] + 'x ' + nome).join(', ');
+  const valor = selecionados.reduce((total, nome) => total + quantidadesDoces[nome] * precosDoces[nome], 0);
+  dados.movimentos.push({id:Date.now().toString(),cliente:id,tipo:'compra',descricao:descricao,valor:valor,data:data});
+
+  salvar();
+  alert('Compra registrada! Total: R$ ' + valor.toFixed(2).replace('.', ','));
+  Object.keys(quantidadesDoces).forEach(nome => { quantidadesDoces[nome] = 0; });
+  atualizarResumoDoces();
+  aba('inicio');
+  atualizar();
+}
+function mostrarSaldo(){
+let id=document.getElementById('clientePagamento').value;
+document.getElementById('saldoCliente').textContent=id?'Saldo atual: '+reais(saldo(id)):'Selecione um cliente para ver o saldo.';
+}
+function cadastrarPagamento(){
+let id=document.getElementById('clientePagamento').value;
+let valor=Number(document.getElementById('valorPagamento').value);
+let data=document.getElementById('dataPagamento').value;
+if(!id||!Number.isFinite(valor)||valor<=0||!data)return alert('Preencha cliente, valor e data.');
+let atual=saldo(id);
+if(atual<=0)return alert('Este cliente não possui dívida pendente.');
+if(valor>atual+0.0001)return alert('O pagamento não pode ser maior que a dívida atual ('+reais(atual)+').');
+dados.movimentos.push({id:Date.now().toString(),cliente:id,tipo:'pagamento',descricao:'Pagamento recebido',valor,data});
+document.getElementById('valorPagamento').value='';
+salvar();alert('Pagamento registrado!');aba('inicio');
+}
+function listarClientes(){
+let q=(document.getElementById('busca')?.value||'').toLowerCase();
+let lista=dados.clientes.filter(c=>c.nome.toLowerCase().includes(q));
+document.getElementById('listaClientes').innerHTML=lista.length?lista.map(c=>`<div class="item"><strong>${escapar(c.nome)}</strong><div class="muted">${escapar(c.fone||'Sem telefone')}</div><div class="money">Saldo: ${reais(saldo(c.id))}</div><button class="secondary" onclick="abrirCliente('${c.id}')">Ver detalhes</button></div>`).join(''):'<p class="muted">Nenhum cliente encontrado.</p>';
+}
+function abrirCliente(id){clienteAtual=id;aba('detalhe')}
+function mostrarDetalhe(){
+let c=dados.clientes.find(c=>c.id===clienteAtual);
+if(!c){aba('clientes');return}
+document.getElementById('tituloDetalhe').textContent=c.nome;
+let mov=dados.movimentos.filter(m=>m.cliente===c.id).sort((a,b)=>b.data.localeCompare(a.data));
+document.getElementById('infoDetalhe').innerHTML=`<p>${escapar(c.fone||'Sem telefone cadastrado')}</p><h2>Saldo: ${reais(saldo(c.id))}</h2>`+(mov.length?mov.map(m=>`<div class="item">${escapar(m.data)}<br><strong>${escapar(m.descricao)}</strong><span class="money">${m.tipo==='compra'?'+ ':'− '}${reais(m.valor)}</span></div>`).join(''):'<p class="muted">Nenhuma movimentação.</p>');
+}
+function chaveFinanceiraCliente(nome, telefone='') {
+  const normalizar = v => String(v||'').trim().toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
+  const fone = String(telefone||'').replace(/\D/g,'').replace(/^55/,'');
+  return fone ? 'fone:'+fone : 'nome:'+normalizar(nome);
+}
+function dataISO(valor){
+  if(!valor) return '';
+  try{
+    let d;
+    if(valor && typeof valor.toDate==='function') d=valor.toDate();
+    else if(valor instanceof Date) d=valor;
+    else if(typeof valor==='number') d=new Date(valor);
+    else if(typeof valor==='string' && /^\d{4}-\d{2}-\d{2}$/.test(valor)) return valor;
+    else d=new Date(valor);
+    if(!d || Number.isNaN(d.getTime())) return '';
+    const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }catch(e){return '';}
+}
+function dataHojeISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function rotuloDia(iso){const p=iso.split('-');return `${p[2]}/${p[1]}`;}
+function renderizarRelatorioFinanceiro(){
+  const hoje=dataHojeISO();
+  const movimentos=Array.isArray(dados?.movimentos)?dados.movimentos:[];
+  const comprasManuais=movimentos.filter(m=>m.tipo==='compra' && dataISO(m.data)===hoje).reduce((s,m)=>s+(Number(m.valor)||0),0);
+  const recebidosManuais=movimentos.filter(m=>m.tipo==='pagamento' && dataISO(m.data)===hoje).reduce((s,m)=>s+(Number(m.valor)||0),0);
+  const comprasOnlineHoje=pedidosOnlineCache.filter(p=>String(p.status||'').toLowerCase()!=='recusado' && dataISO(p.criadoEm)===hoje).reduce((s,p)=>s+(Number(p.total)||0),0);
+  const recebidosOnlineHoje=pedidosOnlineCache.filter(p=>String(p.pagamento||'').toLowerCase()==='pago' && dataISO(p.atualizadoEm||p.pagoEm||p.criadoEm)===hoje).reduce((s,p)=>s+(Number(p.total)||0),0);
+  document.getElementById('totalCompras').textContent=reais(comprasManuais+comprasOnlineHoje);
+  document.getElementById('totalRecebido').textContent=reais(recebidosManuais+recebidosOnlineHoje);
+  document.getElementById('dataRelatorio').textContent='Resumo de hoje • '+new Date().toLocaleDateString('pt-BR');
+
+  const dias=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-i);dias.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);}
+  const registros=dias.map(iso=>{
+    const cm=movimentos.filter(m=>m.tipo==='compra' && dataISO(m.data)===iso).reduce((s,m)=>s+(Number(m.valor)||0),0);
+    const rm=movimentos.filter(m=>m.tipo==='pagamento' && dataISO(m.data)===iso).reduce((s,m)=>s+(Number(m.valor)||0),0);
+    const co=pedidosOnlineCache.filter(p=>String(p.status||'').toLowerCase()!=='recusado' && dataISO(p.criadoEm)===iso).reduce((s,p)=>s+(Number(p.total)||0),0);
+    const ro=pedidosOnlineCache.filter(p=>String(p.pagamento||'').toLowerCase()==='pago' && dataISO(p.atualizadoEm||p.pagoEm||p.criadoEm)===iso).reduce((s,p)=>s+(Number(p.total)||0),0);
+    return {iso,compras:cm+co,recebidos:rm+ro};
+  });
+  const max=Math.max(1,...registros.flatMap(r=>[r.compras,r.recebidos]));
+  document.getElementById('graficoFinanceiro').innerHTML=registros.slice().reverse().map(r=>{
+    const w1=Math.max(0,Math.min(100,r.compras/max*100));
+    const w2=Math.max(0,Math.min(100,r.recebidos/max*100));
+    return `<div class="grafico-dia"><div class="grafico-dia-titulo"><strong>${r.iso===hoje?'Hoje • ':''}${rotuloDia(r.iso)}</strong><span class="muted">Compras ${reais(r.compras)} · Recebido ${reais(r.recebidos)}</span></div><div class="barra-linha"><span>Compras</span><div class="barra-fundo"><div class="barra compras" style="width:${w1}%"></div></div><span>${reais(r.compras)}</span></div><div class="barra-linha"><span>Recebido</span><div class="barra-fundo"><div class="barra recebidos" style="width:${w2}%"></div></div><span>${reais(r.recebidos)}</span></div></div>`;
+  }).join('');
+}
+async function atualizarFinanceiroPedidos(){
+  if(!usuarioAutenticado) return;
+  try{
+    const snap = await getDocs(query(collection(db,'pedidos'),orderBy('criadoEm','desc')));
+    pedidosOnlineCache = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const pedidosAbertos = pedidosOnlineCache.filter(p=>String(p.pagamento||'Pendente').toLowerCase()!=='pago' && String(p.status||'').toLowerCase()!=='recusado');
+    const saldos = new Map();
+    for(const c of dados.clientes){
+      const valor = Math.max(0,saldo(c.id));
+      if(valor>0.005){
+        const chave=chaveFinanceiraCliente(c.nome,c.fone);
+        const atual=saldos.get(chave)||{nome:c.nome,fone:c.fone||'',valor:0};
+        atual.valor+=valor; if(!atual.fone && c.fone) atual.fone=c.fone; saldos.set(chave,atual);
+      }
+    }
+    for(const p of pedidosAbertos){
+      const valor=Number(p.total)||0; if(valor<=0) continue;
+      const chave=chaveFinanceiraCliente(p.nome,p.whatsapp);
+      const atual=saldos.get(chave)||{nome:String(p.nome||'Cliente'),fone:String(p.whatsapp||''),valor:0};
+      atual.valor+=valor; if(!atual.fone && p.whatsapp) atual.fone=p.whatsapp; saldos.set(chave,atual);
+    }
+    const lista=[...saldos.values()].filter(c=>c.valor>0.005).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+    const totalManual=dados.clientes.reduce((s,c)=>s+Math.max(0,saldo(c.id)),0);
+    const totalPedidos=pedidosAbertos.reduce((s,p)=>s+(Number(p.total)||0),0);
+    document.getElementById('total').textContent=reais(totalManual+totalPedidos);
+    document.getElementById('quantidade').textContent=lista.length;
+    document.getElementById('pendentes').innerHTML=lista.map(c=>`<div class="item"><strong>${escapar(c.nome)}</strong><span class="money">${reais(c.valor)}</span></div>`).join('')||'<p class="muted">Nenhuma dívida pendente 🎉</p>';
+    renderizarRelatorioFinanceiro();
+  }catch(e){ console.error('Não foi possível atualizar o financeiro dos pedidos:',e); renderizarRelatorioFinanceiro(); }
+}
+function atualizar(){
+let total=dados.clientes.reduce((s,c)=>s+Math.max(0,saldo(c.id)),0);
+document.getElementById('total').textContent=reais(total);
+document.getElementById('quantidade').textContent=dados.clientes.filter(c=>saldo(c.id)>0.005).length;
+document.getElementById('pendentes').innerHTML=dados.clientes.filter(c=>saldo(c.id)>0.005).map(c=>`<div class=\"item\"><strong>${escapar(c.nome)}</strong><span class=\"money\">${reais(saldo(c.id))}</span></div>`).join('')||'<p class=\"muted\">Nenhuma dívida pendente 🎉</p>';
+listarClientes();
+renderizarHistorico();
+document.getElementById('saldoRelatorio').textContent=reais(total);
+renderizarRelatorioFinanceiro();
+preencherSelects();
+if(usuarioAutenticado) atualizarFinanceiroPedidos();
+}
+
+function chaveNomeCliente(nome, telefone='') {
+  const normalizar = v => String(v||'').trim().toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
+  const fone = String(telefone||'').replace(/\D/g,'').replace(/^55/,'');
+  return fone ? 'fone:'+fone : 'nome:'+normalizar(nome);
+}
+function dataOrdemHistorico(valor) {
+  if(!valor) return 'Data não informada';
+  try { const d = valor.toDate ? valor.toDate() : new Date(valor); if(Number.isNaN(d.getTime())) return String(valor); return d.toLocaleString('pt-BR'); }
+  catch(e){ return String(valor); }
+}
+async function renderizarHistorico(){
+  const area=document.getElementById('listaHistorico');
+  if(!area) return;
+  area.innerHTML='<p class="muted">Carregando histórico...</p>';
+  const grupos=new Map();
+  const obterGrupo=(nome,fone)=>{
+    const key=chaveNomeCliente(nome,fone);
+    if(!grupos.has(key)) grupos.set(key,{key,nome:String(nome||'Cliente sem nome').trim(),fone:String(fone||''),eventos:[]});
+    const g=grupos.get(key);
+    if(!g.fone && fone) g.fone=String(fone);
+    return g;
+  };
+  for(const m of dados.movimentos||[]){
+    const c=(dados.clientes||[]).find(c=>c.id===m.cliente);
+    const g=obterGrupo(c?.nome||'Cliente removido',c?.fone||'');
+    g.eventos.push({data:String(m.data||''),descricao:String(m.descricao||'Movimentação'),valor:Number(m.valor)||0,tipo:m.tipo==='compra'?'compra':'pagamento',ordem:String(m.data||'')});
+  }
+  if(usuarioAutenticado){
+    try{
+      const snap=await getDocs(query(collection(db,'pedidos'),orderBy('criadoEm','desc')));
+      snap.docs.forEach(d=>{
+        const p=d.data();
+        if(String(p.pagamento||'Pendente').toLowerCase()!=='pago') return;
+        const g=obterGrupo(p.nome||'Cliente',p.whatsapp||'');
+        const itens=Array.isArray(p.itens)?p.itens.map(i=>`${Number(i.quantidade)||0}x ${String(i.nome||'produto')}`).join(', '):'Pedido';
+        const data=dataOrdemHistorico(p.criadoEm);
+        g.eventos.push({data,descricao:'Pedido pago — '+itens,valor:Number(p.total)||0,tipo:'pedido-pago',ordem:p.criadoEm?.toDate?p.criadoEm.toDate().toISOString():String(p.criadoEm||'')});
+      });
+    }catch(e){ console.warn('Não foi possível carregar pedidos pagos para o histórico:',e); }
+  }
+  const lista=[...grupos.values()].filter(g=>g.eventos.length).map(g=>{
+    g.eventos.sort((a,b)=>String(b.ordem).localeCompare(String(a.ordem)));
+    g.ultima=g.eventos[0]?.data||'Data não informada';
+    return g;
+  }).sort((a,b)=>String(b.eventos[0]?.ordem||'').localeCompare(String(a.eventos[0]?.ordem||'')));
+  if(!lista.length){area.innerHTML='<p class="muted">Nenhuma movimentação ou pedido pago registrado.</p>';return;}
+  area.innerHTML=lista.map((g,i)=>{
+    const detalhes=g.eventos.map(e=>`<div class="item"><span class="muted">${escapar(e.data)}</span><br><strong>${escapar(e.descricao)}</strong><div class="money">${e.tipo==='compra'?'Compra: ':e.tipo==='pagamento'?'Pagamento recebido: ':'Pedido pago: '}${reais(e.valor)}</div></div>`).join('');
+    return `<details class="item historico-cliente"><summary style="cursor:pointer;list-style-position:inside"><strong>${escapar(g.nome)}</strong><div class="muted">Última movimentação: ${escapar(g.ultima)} • ${g.eventos.length} registro(s)</div></summary><div style="margin-top:12px">${g.fone?`<p class="muted">WhatsApp: ${escapar(g.fone)}</p>`:''}${detalhes}</div></details>`;
+  }).join('');
+}
+document.getElementById('dataCompra').value=new Date().toLocaleDateString('en-CA');
+document.getElementById('dataPagamento').value=new Date().toLocaleDateString('en-CA');
+  function escolherDoce(nome, preco) {
+  const campo = document.getElementById('descricaoCompra');
+  const valor = document.getElementById('valorCompra');
+
+  campo.value = nome;
+  valor.value = preco.toFixed(2);
+
+  document.querySelectorAll('.doce-opcao').forEach(botao => {
+    botao.classList.remove('active');
+  });
+
+  const selecionado = [...document.querySelectorAll('.doce-opcao')]
+    .find(botao => botao.getAttribute('onclick').includes(nome));
+
+  if (selecionado) selecionado.classList.add('active');
+  }
+
+function formatarDataPedido(valor){
+  try { if(!valor) return 'Data não informada'; const d = valor.toDate ? valor.toDate() : new Date(valor); return d.toLocaleString('pt-BR'); }
+  catch(e){ return 'Data não informada'; }
+}
+async function carregarPedidos(){
+  const area=document.getElementById('listaPedidos');
+  if(!usuarioAutenticado){ area.innerHTML='<p class="muted">Entre no painel administrativo para ver os pedidos.</p>'; return; }
+  area.innerHTML='<p class="muted">Carregando pedidos...</p>';
+  try{
+    const q=query(collection(db,'pedidos'),orderBy('criadoEm','desc'));
+    const snap=await getDocs(q);
+    if(snap.empty){ area.innerHTML='<p class="muted">Ainda não há pedidos.</p>'; return; }
+    const pedidosAtivos = snap.docs.filter(d => String(d.data().pagamento || 'Pendente').toLowerCase() !== 'pago');
+    if(!pedidosAtivos.length){ area.innerHTML='<p class="muted">Não há pedidos aguardando pagamento. Os pedidos pagos estão no Histórico.</p>'; return; }
+    area.innerHTML=pedidosAtivos.map(d=>{
+      const p=d.data();
+      const itens=Array.isArray(p.itens)?p.itens.map(i=>`${Number(i.quantidade)||0} × ${escapar(i.nome)} (${reais((Number(i.precoUnitario)||0)*(Number(i.quantidade)||0))})`).join('<br>'):'Itens não informados';
+      const endereco=p.tipoEntrega==='entrega' && p.endereco ? `<p><strong>Endereço:</strong> ${escapar(p.endereco.rua)}, ${escapar(p.endereco.numero)} — ${escapar(p.endereco.bairro)}${p.endereco.complemento?' — '+escapar(p.endereco.complemento):''}</p>` : '<p><strong>Entrega:</strong> Retirada no local</p>';
+      const status=escapar(p.status||'Aguardando análise');
+      const botoes=(p.status==='Aguardando análise'||!p.status)?`<button type="button" onclick="alterarStatusPedido('${d.id}','Aceito')">Confirmar pedido</button><button type="button" class="danger" onclick="alterarStatusPedido('${d.id}','Recusado')">Recusar pedido</button>`:(p.status==='Aceito'?`<button type="button" class="secondary" onclick="enviarPixWhatsApp('${d.id}')">Enviar dados de pagamento pelo WhatsApp</button><button type="button" class="secondary" onclick="alterarStatusPedido('${d.id}','Concluído')">Marcar como concluído</button>`:'');
+      const pagamento = String(p.pagamento || 'Pendente');
+      const botaoPagamento = pagamento.toLowerCase() === 'pago'
+        ? '<span class="muted">✓ Pago</span>'
+        : `<button type="button" class="secondary" onclick="marcarPedidoComoPago('${d.id}')">Pagar</button>`;
+      return `<div class="item"><strong>Pedido • ${escapar(p.nome||'Cliente')}</strong><p><strong>WhatsApp:</strong> ${escapar(p.whatsapp||'Não informado')}</p><p>${itens}</p>${endereco}<p><strong>Subtotal:</strong> ${reais(p.subtotal)} • <strong>Entrega:</strong> ${reais(p.entrega)} • <strong>Total:</strong> ${reais(p.total)}</p><p><strong>Status:</strong> ${status} • <strong>Pagamento:</strong> ${escapar(pagamento)} ${botaoPagamento}</p><p class="muted">Recebido em: ${formatarDataPedido(p.criadoEm)}</p>${botoes}</div>`;
+    }).join('');
+  }catch(e){ console.error(e); area.innerHTML='<p>Não foi possível carregar os pedidos. Confira as regras do Firestore e tente novamente. ('+escapar(e.code||'erro')+')</p>'; }
+}
+async function obterTelefoneDoCliente(pedido){
+  // O cadastro administrativo fica em appData/{UID}; procuramos pelo nome ou telefone.
+  // O número cadastrado no painel tem prioridade sobre o número guardado no pedido.
+  let clientes=[];
+  if(usuarioAutenticado){
+    try{
+      const cadastro=await getDoc(doc(db,'appData',usuarioAutenticado.uid));
+      if(cadastro.exists()){
+        const remoto=cadastro.data();
+        if(Array.isArray(remoto.clientes)) clientes=remoto.clientes;
+      }
+    }catch(e){ console.warn('Não foi possível consultar o cadastro de clientes:',e); }
+  }
+  const normalizarNome=v=>String(v||'').trim().toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
+  const digitos=v=>String(v||'').replace(/\D/g,'');
+  const nomePedido=normalizarNome(pedido?.nome);
+  const fonePedido=digitos(pedido?.whatsapp).replace(/^55/,'');
+  const cliente=clientes.find(c=>{
+    const nomeCliente=normalizarNome(c.nome);
+    const foneCliente=digitos(c.fone).replace(/^55/,'');
+    return (nomePedido && nomeCliente===nomePedido) || (fonePedido && foneCliente===fonePedido);
+  });
+  return String(cliente?.fone || pedido?.whatsapp || '').replace(/\D/g,'');
+}
+
+async function enviarPixWhatsApp(id){
+  if(!usuarioAutenticado){alert('Entre no painel administrativo.');return;}
+  try{
+    const snap=await getDoc(doc(db,'pedidos',id));
+    if(!snap.exists()){alert('Não encontrei esse pedido. Atualize a lista e tente novamente.');return;}
+    const p=snap.data();
+    if(p.status!=='Aceito'){alert('Confirme o pedido antes de enviar os dados de pagamento.');return;}
+    const telefone=await obterTelefoneDoCliente(p);
+    if(!telefone){alert('Não encontrei WhatsApp para este pedido. Cadastre o cliente com o nome usado no pedido e o número correto, depois tente novamente.');return;}
+    const numero=telefone.startsWith('55')?telefone:('55'+telefone);
+    const total=Number(p.total)||0;
+    const valor=total.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    const nome=String(p.nome||'').trim();
+    const mensagem=`Olá${nome?' '+nome:''}! 💗🍓 Aqui é da MARIA JULIA BOLOS E DOCES!
+
+Seu pedido foi conferido e está confirmado.
+
+💰 Valor total: ${valor}
+
+💳 Dados para pagamento via Pix
+Banco: Banco do Brasil
+Chave Pix (CPF): 116.882.959-33
+Titular: DAYELLEN FERNANDA PETERLINI MEDEIROS
+
+Após realizar o pagamento, envie o comprovante por aqui mesmo no WhatsApp para conferirmos o recebimento. O pedido só será marcado como pago após a confirmação do recebimento.
+
+Obrigada por escolher a MARIA JULIA BOLOS E DOCES! 🍫🍓`;
+    window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(mensagem),'_blank','noopener');
+  }catch(e){console.error(e);alert('Não foi possível preparar a mensagem. ('+(e.code||'erro')+')');}
+}
+
+async function alterarStatusPedido(id,status){
+  if(!usuarioAutenticado){alert('Entre no painel administrativo.');return;}
+  const confirmacao=status==='Recusado'?'Deseja recusar este pedido?':status==='Aceito'?'Deseja aceitar este pedido?':'Marcar este pedido como concluído?';
+  if(!confirm(confirmacao)) return;
+
+  // Abre uma aba durante o clique para reduzir a chance de bloqueio do navegador.
+  let abaWhatsApp = null;
+  if(status === 'Concluído') {
+    try { abaWhatsApp = window.open('about:blank', '_blank'); } catch(e) {}
+  }
+
+  try {
+    let pedido = null;
+    if(status === 'Concluído') {
+      const snapPedido = await getDoc(doc(db,'pedidos',id));
+      if(!snapPedido.exists()) {
+        if(abaWhatsApp) abaWhatsApp.close();
+        alert('Não encontrei esse pedido. Atualize a lista e tente novamente.');
+        return;
+      }
+      pedido = snapPedido.data();
+    }
+
+    await updateDoc(doc(db,'pedidos',id),{status, atualizadoEm:new Date().toISOString()});
+    await carregarPedidos();
+    alert('Status do pedido atualizado.');
+
+    if(status === 'Concluído' && pedido) {
+      const telefone = await obterTelefoneDoCliente(pedido);
+      if(!telefone) {
+        if(abaWhatsApp) abaWhatsApp.close();
+        alert('O pedido foi concluído, mas não encontrei WhatsApp no pedido nem no cadastro de clientes. Cadastre o cliente e confira se o nome corresponde ao pedido.');
+        return;
+      }
+      const numero = telefone.startsWith('55') ? telefone : '55' + telefone;
+      const nome = String(pedido.nome || '').trim();
+      const ehEntrega = pedido.tipoEntrega === 'entrega';
+      const mensagem = ehEntrega
+        ? `Olá${nome ? ' ' + nome : ''}! 💗🍓\n\nSeu pedido da MARIA JULIA BOLOS E DOCES está pronto! 🧁✨\n\nEstamos preparando tudo para sair para entrega. Em breve, seu pedido estará a caminho! 🚗💨\n\nObrigada por escolher a MARIA JULIA BOLOS E DOCES! ❤️`
+        : `Olá${nome ? ' ' + nome : ''}! 💗🍓\n\nSeu pedido da MARIA JULIA BOLOS E DOCES está prontinho! 🧁✨\n\nJá está disponível para retirada no local. Pode vir buscar! 💕\n\nObrigada por escolher a MARIA JULIA BOLOS E DOCES! ❤️`;
+      const url = 'https://wa.me/' + numero + '?text=' + encodeURIComponent(mensagem);
+      if(abaWhatsApp) abaWhatsApp.location.href = url;
+      else window.location.href = url;
+    } else if(abaWhatsApp) {
+      abaWhatsApp.close();
+    }
+  } catch(e) {
+    if(abaWhatsApp) { try { abaWhatsApp.close(); } catch(_) {} }
+    console.error(e);
+    alert('Não foi possível atualizar o pedido. ('+(e.code||'erro')+')');
+  }
+}
+
+
+async function marcarPedidoComoPago(id){
+  if(!usuarioAutenticado){alert('Entre no painel administrativo.');return;}
+  if(!confirm('Confirma que o pagamento deste pedido foi realmente recebido?')) return;
+  try{
+    const ref=doc(db,'pedidos',id);
+    const snap=await getDoc(ref);
+    if(!snap.exists()){alert('Não encontrei esse pedido. Atualize a lista e tente novamente.');return;}
+    if(String(snap.data().pagamento||'Pendente').toLowerCase()==='pago'){
+      alert('Este pedido já está marcado como pago.');
+      await carregarPedidos();
+      return;
+    }
+    await updateDoc(ref,{pagamento:'Pago', atualizadoEm:new Date().toISOString()});
+    await carregarPedidos();
+    await atualizarFinanceiroPedidos();
+    alert('Pagamento confirmado e status atualizado para Pago.');
+  }catch(e){
+    console.error(e);
+    alert('Não foi possível atualizar o pagamento. ('+(e.code||'erro')+')');
+  }
+}
+
+
+const produtosDisponibilidade = [
+'Cone recheado — Brigadeiro','Cone recheado — Maracujá com brigadeiro','Cone recheado — Dois amores','Cone recheado — Leite Ninho',
+'Cone gourmet — Ferrero Rocher','Cone gourmet — Ninho com Nutella','Cone gourmet — Maracujá com Nutella','Cone gourmet — Kinder Bueno',
+'Bolo de pote — Dois amores','Bolo de pote — Maracujá','Bolo de pote — Maracujá com brigadeiro','Bolo de pote — Brigadeiro','Bolo de pote — Leite Ninho',
+'Cascão recheado — Ferrero Rocher','Cascão recheado — Ninho com Nutella','Cascão recheado — Maracujá com Nutella','Cascão recheado — Ninho com uva','Cascão recheado — Kinder Bueno','Cascão recheado — Cravejado',
+'Espeto gourmet — Ninho com morango','Espeto gourmet — Ninho com uva','Espeto gourmet — Kinder Bueno',
+'Bombom de Ninho com uva','Bombom de Ninho com morango','Coxinha de morango tipo Ferrero','Coxinha de morango — Ninho com Nutella'
+];
+function dataHojeLocal(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
+async function carregarDisponibilidade(){
+ const campo=document.getElementById('dataDisponibilidade');
+ if(!campo.value) campo.value=dataHojeLocal();
+ const area=document.getElementById('listaDisponibilidade');
+ area.innerHTML='<p class="muted">Carregando...</p>';
+ try{
+  const snap=await getDoc(doc(db,'disponibilidade',campo.value));
+  const salvo=snap.exists()?snap.data().produtos:null;
+  area.innerHTML=produtosDisponibilidade.map(nome=>{
+   const marcado=salvo ? salvo[nome]===true : true;
+   return `<label class="item" style="display:flex;align-items:center;gap:10px"><input type="checkbox" class="checkDoceDisp" data-nome="${escapar(nome)}" ${marcado?'checked':''} style="width:auto;margin:0"><span>${escapar(nome)}</span></label>`;
+  }).join('');
+  document.getElementById('msgDisponibilidade').textContent=snap.exists()?'Disponibilidade salva carregada.':'Ainda não há configuração para esta data; todos começam disponíveis.';
+ }catch(e){area.innerHTML='<p>Não foi possível carregar. ('+escapar(e.code||'erro')+')</p>';}
+}
+async function salvarDisponibilidade(){
+ if(!usuarioAutenticado)return alert('Entre no painel administrativo.');
+ const data=document.getElementById('dataDisponibilidade').value;
+ if(!data)return alert('Escolha uma data.');
+ const produtos={};
+ document.querySelectorAll('.checkDoceDisp').forEach(c=>produtos[c.dataset.nome]=c.checked);
+ try{
+  await setDoc(doc(db,'disponibilidade',data),{data,produtos,atualizadoEm:new Date().toISOString(),atualizadoPor:usuarioAutenticado.uid});
+  await setDoc(doc(db,'disponibilidade','ativa'),{dataAtiva:data,atualizadoEm:new Date().toISOString(),atualizadoPor:usuarioAutenticado.uid});
+  document.getElementById('msgDisponibilidade').textContent='Disponibilidade salva para '+data+'. Essa é a data exibida no cardápio dos clientes.';
+  alert('Disponibilidade salva!');
+ }catch(e){alert('Não foi possível salvar. Confira as regras do Firestore. ('+(e.code||'erro')+')');}
+}
+document.getElementById('dataDisponibilidade')?.addEventListener('change',carregarDisponibilidade);
+
+function mensagemLogin(msg){ document.getElementById('loginMensagem').textContent = msg || ''; }
+document.getElementById('btnEntrar').addEventListener('click', async () => {
+  const email = document.getElementById('loginEmail').value.trim();
+  const senha = document.getElementById('loginSenha').value;
+  if(!email || !senha){ mensagemLogin('Informe o e-mail e a senha.'); return; }
+  const btn = document.getElementById('btnEntrar'); btn.disabled = true; btn.textContent = 'Entrando...'; mensagemLogin('');
+  try { await signInWithEmailAndPassword(auth, email, senha); }
+  catch(e){ mensagemLogin(e.code === 'auth/invalid-credential' ? 'E-mail ou senha incorretos.' : 'Não foi possível entrar. Confira os dados e tente novamente. (' + e.code + ')'); }
+  finally { btn.disabled = false; btn.textContent = 'Entrar'; }
+});
+document.getElementById('btnSair').addEventListener('click', () => signOut(auth));
+async function importarClientesDosPedidos(){
+  if(!usuarioAutenticado) return;
+  try{
+    const snap = await getDocs(collection(db,'clientes_publicos'));
+    if(snap.empty) return;
+    let alterou = false;
+    for(const registro of snap.docs){
+      const item = registro.data();
+      const nome = String(item.nome||'').trim().slice(0,100);
+      const fone = String(item.whatsapp||'').trim().slice(0,30);
+      const digitos = v => String(v||'').replace(/\D/g,'').replace(/^55/,'');
+      if(!nome || digitos(fone).length < 10 || digitos(fone).length > 13) continue;
+      const existente = dados.clientes.find(c => digitos(c.fone) === digitos(fone));
+      if(existente){
+        if(existente.nome !== nome || existente.fone !== fone){ existente.nome=nome; existente.fone=fone; alterou=true; }
+      } else {
+        dados.clientes.push({id:'pedido-'+registro.id,nome,fone});
+        alterou = true;
+      }
+    }
+    if(alterou){
+      await setDoc(doc(db,'appData',usuarioAutenticado.uid), JSON.parse(JSON.stringify(dados)));
+      localStorage.setItem(chave,JSON.stringify(dados));
+      atualizar();
+    }
+  }catch(e){
+    console.error('Não foi possível importar automaticamente os clientes:',e);
+    // O pedido continua disponível na aba Pedidos; não interrompe o acesso ao painel.
+  }
+}
+
+onAuthStateChanged(auth, async user => {
+  if(!user){ usuarioAutenticado = null; document.body.classList.remove('autenticado'); mensagemLogin('Entre com o e-mail administrativo.'); return; }
+  usuarioAutenticado = user;
+  mensagemLogin('');
+  try {
+    const ref = doc(db,'appData',user.uid);
+    const snap = await getDoc(ref);
+    if(snap.exists()) {
+      const remoto = snap.data();
+      dados = { clientes: Array.isArray(remoto.clientes) ? remoto.clientes : [], movimentos: Array.isArray(remoto.movimentos) ? remoto.movimentos : [] };
+    } else {
+      // Migra dados locais de teste para a conta autenticada somente se o documento remoto ainda não existe.
+      try { const local = JSON.parse(localStorage.getItem(chave)); if(local && Array.isArray(local.clientes) && Array.isArray(local.movimentos)) dados = local; } catch(e) {}
+      await setDoc(ref, dados);
+    }
+    await importarClientesDosPedidos();
+    localStorage.setItem(chave, JSON.stringify(dados));
+    document.body.classList.add('autenticado');
+    document.getElementById('dataCompra').value ||= new Date().toLocaleDateString('en-CA');
+    document.getElementById('dataPagamento').value ||= new Date().toLocaleDateString('en-CA');
+    atualizar();
+  } catch(e) {
+    console.error(e);
+    usuarioAutenticado = null;
+    await signOut(auth);
+    mensagemLogin('Não foi possível acessar o banco. Verifique as regras do Firestore. (' + e.code + ')');
+  }
+});
+// O HTML usa onclick nos botões; exponha as funções para que continuem funcionando como antes.
+Object.assign(window, { carregarDisponibilidade, salvarDisponibilidade, carregarPedidos, alterarStatusPedido, marcarPedidoComoPago, enviarPixWhatsApp, obterTelefoneDoCliente, salvar, reais, escapar, saldo, aba, cadastrarCliente, preencherSelects, atualizarPrecoDoce, alternarDoce, alterarQuantidade, atualizarResumoDoces, cadastrarCompra, mostrarSaldo, cadastrarPagamento, listarClientes, abrirCliente, mostrarDetalhe, atualizar, atualizarFinanceiroPedidos, renderizarHistorico, escolherDoce });
+
+</script>
+
+<script>
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(err => console.warn("PWA offline registration:", err))); }
+</script>
+</body>
+</html>
