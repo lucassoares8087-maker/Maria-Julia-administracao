@@ -13,7 +13,7 @@
 <style>
  :root{--pink:#e9478b;--pink2:#cf2874;--light:#fff0f6;--dark:#64253f;--white:#fff;--rose:#f9cddd}
 *{box-sizing:border-box}
-body{margin:0;background:#fff3f8;color:var(--dark);font-family:Arial,sans-serif;position:relative;min-height:100vh} body::before{content:'';position:fixed;inset:0;background-image:url('marca-dagua-cartoon.png');background-repeat:no-repeat;background-position:center 42%;background-size:min(125vw,820px) auto;opacity:.34;pointer-events:none;z-index:0} body>*{position:relative;z-index:1}
+body{margin:0;background:radial-gradient(ellipse at 12% 8%,#ffe0ed 0,transparent 36%),radial-gradient(ellipse at 92% 30%,#ffeaf2 0,transparent 34%),linear-gradient(180deg,#fff7fa 0%,#fff0f6 100%);color:var(--dark);font-family:Arial,sans-serif;position:relative;min-height:100vh} body::before{content:'🍓  ✦  🧁  ✦  🍰';position:fixed;left:0;right:0;bottom:18px;text-align:center;font-size:clamp(20px,5vw,36px);letter-spacing:12px;opacity:.10;pointer-events:none;z-index:0} body>*{position:relative;z-index:1}
 header{background:linear-gradient(135deg,#f45d9b 0%,#d12b78 100%);color:white;padding:25px 18px 28px;border-radius:0 0 30px 30px;box-shadow:0 8px 22px #c83d7830}
 header h1{margin:0;font-size:clamp(21px,5.2vw,30px);line-height:1.12;padding-right:78px}
 header p{margin:7px 0 0;font-size:clamp(14px,3.8vw,18px)}
@@ -32,7 +32,10 @@ button.secondary{background:linear-gradient(135deg,#fff1f7,#ffdce9);color:#a62f6
 button.danger{background:linear-gradient(135deg,#c94361,#a83252)}
 nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0 24px}
 nav button{width:100%;min-width:0;min-height:132px;padding:15px 5px 13px;font-size:clamp(12px,3.4vw,16px);line-height:1.15;text-align:center;white-space:normal;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow-wrap:normal;word-break:normal;hyphens:none;border-radius:27px;gap:13px;background:linear-gradient(145deg,#f45d9b 0%,#d82f7b 100%);box-shadow:0 8px 16px #b52c6226,inset 0 1px 0 #ffffff55}
-nav button span{font-size:clamp(39px,10vw,57px);line-height:1;display:block;font-weight:normal;filter:drop-shadow(0 4px 2px #9d245244);text-shadow:0 1px 0 #ffffff65}
+nav button span{font-size:clamp(39px,10vw,57px);line-height:1;display:block;font-weight:normal}
+nav button .menu-icon{width:52px;height:52px;display:block;filter:drop-shadow(0 3px 2px #9d245244)}
+nav button .menu-icon path,nav button .menu-icon rect,nav button .menu-icon circle,nav button .menu-icon line,nav button .menu-icon polyline{stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.quick-icon svg{width:48px;height:48px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
 .quick-icon{display:inline-flex;align-items:center;justify-content:center;width:78px;min-width:78px;font-size:clamp(39px,10vw,55px);line-height:1;filter:drop-shadow(0 5px 3px #a52c5b25)}
 .quick-action{display:flex;align-items:center;justify-content:center;gap:14px;min-height:100px;padding:16px 14px;font-size:clamp(15px,4vw,21px);border-radius:25px}
 .quick-action .quick-label{flex:1;text-align:center}
@@ -89,9 +92,38 @@ select#descricaoCompra {
 #btnSair { width:auto; float:right; background:#fff0f6; color:#a62f64; padding:8px 12px; margin:0; }
 body:not(.autenticado) header, body:not(.autenticado) main, body:not(.autenticado) footer { display:none; }
 body.autenticado #loginTela { display:none; }
+
+/* Aviso visual de pedido novo */
+#avisoPedidoNovo{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-18px);width:calc(100% - 28px);max-width:440px;background:linear-gradient(135deg,#f45d9b,#c92770);color:#fff;padding:16px 18px;border-radius:18px;box-shadow:0 12px 34px #7b1b4a55;z-index:99999;display:flex;align-items:center;gap:12px;opacity:0;visibility:hidden;transition:opacity .22s ease,transform .22s ease,visibility .22s}
+#avisoPedidoNovo.visivel{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+#avisoPedidoNovo .aviso-emoji{font-size:30px;line-height:1}
+#avisoPedidoNovo .aviso-texto{flex:1;font-weight:700;font-size:16px;line-height:1.25}
+#avisoPedidoNovo .aviso-fechar{width:auto;min-width:34px;margin:0;padding:5px 8px;background:#ffffff2b;color:#fff;font-size:22px;box-shadow:none}
+
+/* Acabamento visual MJ Confeitaria: delicado, limpo e confortável no celular. */
+header{position:relative;overflow:hidden;background:linear-gradient(135deg,#f879ad 0%,#e43d89 55%,#bd286d 100%);padding:26px 18px 30px;border-radius:0 0 30px 30px;box-shadow:0 10px 28px #c83d7828}
+header:after{content:'🧁  🍓  ✨';position:absolute;right:16px;bottom:10px;font-size:24px;opacity:.72;pointer-events:none}
+main{max-width:760px;padding:20px 16px 32px}
+.card,.panel{background:rgba(255,255,255,.94);border:1px solid #ffe0eb;border-radius:24px;box-shadow:0 8px 24px rgba(158,45,91,.09)}
+nav button{min-height:118px;border-radius:23px;background:linear-gradient(145deg,#f66ba5,#d92f7b);box-shadow:0 7px 18px #b52c621c;gap:10px}
+nav button:active{transform:translateY(1px)}
+.quick-action{min-height:86px;border-radius:20px}
+.login-card{border:1px solid #ffe0eb;border-radius:25px;box-shadow:0 14px 35px rgba(158,45,91,.12);padding:26px}
+.login-card h1{font-size:clamp(23px,5.5vw,30px);line-height:1.2}
+#btnAtivarAlerta{border:2px solid #e85d91;background:linear-gradient(135deg,#fff0f6,#ffd9e8);color:#9e245b;min-height:52px}
+#estadoAlertaPedidos{background:#fff5f9;border:1px solid #f6d5e2;border-radius:13px;padding:11px 12px;line-height:1.45}
+#avisoPedidoNovo{box-sizing:border-box}
+@media(min-width:700px){main{padding-top:26px}.cards{gap:16px}nav{gap:14px}}
+
 </style>
 </head>
 <body>
+<div id="avisoPedidoNovo" role="alert" aria-live="assertive">
+  <span class="aviso-emoji" aria-hidden="true">🔔</span>
+  <span class="aviso-texto" id="textoAvisoPedidoNovo">PEDIDO NOVO!</span>
+  <button type="button" class="aviso-fechar" aria-label="Fechar aviso" onclick="fecharAvisoPedidoNovo()">×</button>
+</div>
+
 <section id="loginTela">
   <div class="login-card">
     <h1>🍰 MARIA JULIA BOLOS E DOCES</h1>
@@ -114,20 +146,20 @@ body.autenticado #loginTela { display:none; }
 <div class="card"><small>Clientes devendo</small><strong id="quantidade">0</strong><span class="card-icon" aria-hidden="true" style="font-size:48px;line-height:1">👥</span></div>
 </div>
 <nav>
-<button onclick="aba('inicio')"><span aria-hidden="true">🏠</span> Início</button>
-<button onclick="aba('clientes')"><span aria-hidden="true">👥</span> Clientes</button>
-<button onclick="aba('pedidos'); carregarPedidos()"><span aria-hidden="true">🗓️🛒</span> Pedidos</button>
-<button onclick="aba('disponibilidade'); carregarDisponibilidade()"><span aria-hidden="true">📅</span> Disponibilidade</button>
-<button onclick="aba('historico')"><span aria-hidden="true">📋🕒</span> Histórico</button>
-<button onclick="aba('relatorios')"><span aria-hidden="true">📈</span> Relatórios</button>
+<button onclick="aba('inicio')"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 22 24 7l18 15"/><path d="M12 20v21h24V20"/><path d="M21 41V28h7v13"/></svg> Início</button>
+<button onclick="aba('clientes')"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="18" cy="15" r="7"/><circle cx="33" cy="18" r="5"/><path d="M5 39c0-8 5-13 13-13s13 5 13 13"/><path d="M30 28c7 0 12 4 13 11"/></svg> Clientes</button>
+<button onclick="aba('pedidos'); carregarPedidos()"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="7" width="32" height="34" rx="3"/><line x1="8" y1="16" x2="40" y2="16"/><line x1="16" y1="4" x2="16" y2="11"/><line x1="32" y1="4" x2="32" y2="11"/><line x1="15" y1="23" x2="20" y2="23"/><line x1="25" y1="23" x2="30" y2="23"/><line x1="15" y1="30" x2="20" y2="30"/><line x1="25" y1="30" x2="30" y2="30"/></svg> Pedidos</button>
+<button onclick="aba('disponibilidade'); carregarDisponibilidade()"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="8" width="36" height="34" rx="2"/><line x1="6" y1="17" x2="42" y2="17"/><line x1="15" y1="4" x2="15" y2="12"/><line x1="33" y1="4" x2="33" y2="12"/><line x1="14" y1="24" x2="14" y2="24"/><line x1="24" y1="24" x2="24" y2="24"/><line x1="34" y1="24" x2="34" y2="24"/><line x1="14" y1="32" x2="14" y2="32"/><line x1="24" y1="32" x2="24" y2="32"/><line x1="34" y1="32" x2="34" y2="32"/></svg> Disponibilidade</button>
+<button onclick="aba('historico')"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="8" width="28" height="35" rx="2"/><path d="M18 8V5h12v3"/><line x1="16" y1="18" x2="32" y2="18"/><line x1="16" y1="25" x2="32" y2="25"/><line x1="16" y1="32" x2="28" y2="32"/></svg> Histórico</button>
+<button onclick="aba('relatorios')"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 6v36h36"/><polyline points="12,32 21,23 28,28 39,13"/><polyline points="32,13 39,13 39,20"/></svg> Relatórios</button>
 </nav>
 
 <section id="inicio">
 <div class="panel">
 <h2>✨ Acesso rápido</h2>
-<button class="quick-action" onclick="aba('novoCliente')"><span class="quick-icon" aria-hidden="true">👩🏻‍💼➕</span><span class="quick-label">+ Cadastrar cliente</span></button>
-<button class="secondary quick-action" onclick="aba('novaCompra')"><span class="quick-icon" aria-hidden="true">🛍️</span><span class="quick-label">+ Registrar compra</span></button>
-<button class="secondary quick-action" onclick="aba('pagamento')"><span class="quick-icon" aria-hidden="true">💳</span><span class="quick-label">+ Registrar pagamento</span></button>
+<button class="quick-action" onclick="aba('novoCliente')"><span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="18" cy="14" r="8"/><path d="M4 39c0-9 5-14 14-14s14 5 14 14"/><path d="M38 26v16M30 34h16"/></svg></span><span class="quick-label">+ Cadastrar cliente</span></button>
+<button class="secondary quick-action" onclick="aba('novaCompra')"><span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M6 8h5l5 24h22l5-17H14"/><circle cx="20" cy="39" r="2.5"/><circle cx="36" cy="39" r="2.5"/></svg></span><span class="quick-label">+ Registrar compra</span></button>
+<button class="secondary quick-action" onclick="aba('pagamento')"><span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="5" y="11" width="38" height="26" rx="4"/><line x1="5" y1="19" x2="43" y2="19"/><line x1="12" y1="29" x2="22" y2="29"/></svg></span><span class="quick-label">+ Registrar pagamento</span></button>
 </div>
 <div class="panel">
 <h2>Clientes com saldo pendente</h2>
@@ -198,6 +230,8 @@ body.autenticado #loginTela { display:none; }
   <div class="panel">
     <h2>Pedidos do cardápio</h2>
     <p class="muted">Pedidos recebidos pelo cardápio online. Aceitar aqui não registra dívida automaticamente.</p>
+    <button type="button" id="btnAtivarAlerta" class="secondary" onclick="ativarAlertasPedidos()">🔔 Ativar som de novos pedidos</button>
+    <p id="estadoAlertaPedidos" class="muted" role="status">Ative o alerta com um toque. Mantenha o painel aberto para ouvir o som.</p>
     <button type="button" onclick="carregarPedidos()">Atualizar pedidos</button>
     <div id="listaPedidos"><p class="muted">Toque em “Atualizar pedidos” para carregar.</p></div>
   </div>
@@ -262,6 +296,84 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
+// Alertas de pedidos: o navegador só libera som depois de um toque do usuário.
+let alertasPedidosAtivos = false;
+let idsPedidosConhecidos = null;
+let timerVerificarPedidos = null;
+let contextoAudioAlerta = null;
+function tocarSomNovoPedido(){
+  try{
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if(!AudioCtx) return;
+    contextoAudioAlerta = contextoAudioAlerta || new AudioCtx();
+    if(contextoAudioAlerta.state === 'suspended') contextoAudioAlerta.resume();
+    const agora = contextoAudioAlerta.currentTime;
+    [0,0.22,0.44].forEach((atraso, indice)=>{
+      const osc = contextoAudioAlerta.createOscillator();
+      const ganho = contextoAudioAlerta.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = indice === 1 ? 1046 : 880;
+      ganho.gain.setValueAtTime(0.0001, agora + atraso);
+      ganho.gain.exponentialRampToValueAtTime(0.22, agora + atraso + 0.025);
+      ganho.gain.exponentialRampToValueAtTime(0.0001, agora + atraso + 0.18);
+      osc.connect(ganho); ganho.connect(contextoAudioAlerta.destination);
+      osc.start(agora + atraso); osc.stop(agora + atraso + 0.19);
+    });
+  }catch(e){console.warn('Não foi possível tocar o alerta sonoro:',e);}
+}
+
+let temporizadorAvisoPedidoNovo = null;
+function mostrarAvisoPedidoNovo(quantidade){
+  const aviso = document.getElementById('avisoPedidoNovo');
+  const texto = document.getElementById('textoAvisoPedidoNovo');
+  if(!aviso || !texto) return;
+  texto.textContent = quantidade === 1 ? '🔔 PEDIDO NOVO! Chegou 1 pedido.' : `🔔 PEDIDOS NOVOS! Chegaram ${quantidade} pedidos.`;
+  aviso.classList.add('visivel');
+  if(temporizadorAvisoPedidoNovo) clearTimeout(temporizadorAvisoPedidoNovo);
+  temporizadorAvisoPedidoNovo = setTimeout(()=>aviso.classList.remove('visivel'),9000);
+}
+function fecharAvisoPedidoNovo(){
+  const aviso = document.getElementById('avisoPedidoNovo');
+  if(aviso) aviso.classList.remove('visivel');
+  if(temporizadorAvisoPedidoNovo) clearTimeout(temporizadorAvisoPedidoNovo);
+}
+async function verificarNovosPedidos(){
+  if(!usuarioAutenticado || !alertasPedidosAtivos) return;
+  try{
+    const snap = await getDocs(query(collection(db,'pedidos'),orderBy('criadoEm','desc')));
+    const idsAtuais = new Set(snap.docs.map(d=>d.id));
+    if(idsPedidosConhecidos !== null){
+      const novos = snap.docs.filter(d=>!idsPedidosConhecidos.has(d.id));
+      if(novos.length){
+        tocarSomNovoPedido();
+        mostrarAvisoPedidoNovo(novos.length);
+        const estado = document.getElementById('estadoAlertaPedidos');
+        if(estado) estado.textContent = novos.length === 1 ? '🔔 Chegou 1 pedido novo!' : `🔔 Chegaram ${novos.length} pedidos novos!`;
+        if('Notification' in window && Notification.permission === 'granted' && document.visibilityState !== 'visible'){
+          new Notification('🍰 MJ Confeitaria — Pedido novo!', {body: novos.length === 1 ? 'Chegou um novo pedido. Toque para abrir o painel.' : `Chegaram ${novos.length} pedidos novos. Toque para abrir o painel.`, icon:'./icon-192.png', tag:'mj-novo-pedido'});
+        }
+      }
+    }
+    idsPedidosConhecidos = idsAtuais;
+  }catch(e){console.warn('Não foi possível verificar novos pedidos:',e);}
+}
+async function ativarAlertasPedidos(){
+  try{
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if(AudioCtx){ contextoAudioAlerta = contextoAudioAlerta || new AudioCtx(); await contextoAudioAlerta.resume(); tocarSomNovoPedido(); }
+    if('Notification' in window && Notification.permission === 'default'){
+      try{ await Notification.requestPermission(); }catch(e){}
+    }
+    alertasPedidosAtivos = true;
+    const estado = document.getElementById('estadoAlertaPedidos');
+    if(estado) estado.textContent = '🔔 Alerta ativado. Com o painel aberto, verificaremos novos pedidos automaticamente.';
+    const botao = document.getElementById('btnAtivarAlerta');
+    if(botao) botao.textContent = '🔔 Som de novos pedidos ativado';
+    if(timerVerificarPedidos) clearInterval(timerVerificarPedidos);
+    await verificarNovosPedidos();
+    timerVerificarPedidos = setInterval(verificarNovosPedidos, 20000);
+  }catch(e){console.warn(e);alert('Não foi possível ativar o som neste navegador. Confira as permissões do site.');}
+}
 let usuarioAutenticado = null;
 let pedidosOnlineCache = [];
 let filaSalvamento = Promise.resolve();
@@ -442,7 +554,7 @@ function renderizarRelatorioFinanceiro(){
   document.getElementById('graficoFinanceiro').innerHTML=registros.slice().reverse().map(r=>{
     const w1=Math.max(0,Math.min(100,r.compras/max*100));
     const w2=Math.max(0,Math.min(100,r.recebidos/max*100));
-    return `<div class="grafico-dia"><div class="grafico-dia-titulo"><strong>${r.iso===hoje?'Hoje • ':''}${rotuloDia(r.iso)}</strong><span class="muted">Compras ${reais(r.compras)} · Recebido ${reais(r.recebidos)}</span></div><div class="barra-linha"><span>Compras</span><div class="barra-fundo"><div class="barra compras" style="width:${w1}%"></div></div><span>${reais(r.compras)}</span></div><div class="barra-linha"><span>Recebido</span><div class="barra-fundo"><div class="barra recebidos" style="width:${w2}%"></div></div><span>${reais(r.recebidos)}</span></div></div>`;
+    return `<div class="grafico-dia"><div class="grafico-dia-titulo"><strong>${r.iso===hoje?'Hoje • ':''}${rotuloDia(r.iso)}</strong></div><div class="barra-linha"><span>Compras</span><div class="barra-fundo"><div class="barra compras" style="width:${w1}%"></div></div><span>${reais(r.compras)}</span></div><div class="barra-linha"><span>Recebido</span><div class="barra-fundo"><div class="barra recebidos" style="width:${w2}%"></div></div><span>${reais(r.recebidos)}</span></div></div>`;
   }).join('');
 }
 async function atualizarFinanceiroPedidos(){
@@ -829,7 +941,7 @@ onAuthStateChanged(auth, async user => {
   }
 });
 // O HTML usa onclick nos botões; exponha as funções para que continuem funcionando como antes.
-Object.assign(window, { carregarDisponibilidade, salvarDisponibilidade, carregarPedidos, alterarStatusPedido, marcarPedidoComoPago, enviarPixWhatsApp, obterTelefoneDoCliente, salvar, reais, escapar, saldo, aba, cadastrarCliente, preencherSelects, atualizarPrecoDoce, alternarDoce, alterarQuantidade, atualizarResumoDoces, cadastrarCompra, mostrarSaldo, cadastrarPagamento, listarClientes, abrirCliente, mostrarDetalhe, atualizar, atualizarFinanceiroPedidos, renderizarHistorico, escolherDoce });
+Object.assign(window, { carregarDisponibilidade, salvarDisponibilidade, carregarPedidos, ativarAlertasPedidos, alterarStatusPedido, marcarPedidoComoPago, enviarPixWhatsApp, obterTelefoneDoCliente, salvar, reais, escapar, saldo, aba, cadastrarCliente, preencherSelects, atualizarPrecoDoce, alternarDoce, alterarQuantidade, atualizarResumoDoces, cadastrarCompra, mostrarSaldo, cadastrarPagamento, listarClientes, abrirCliente, mostrarDetalhe, atualizar, atualizarFinanceiroPedidos, renderizarHistorico, escolherDoce });
 
 </script>
 
