@@ -1,84 +1,183 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#e85d91">
 <meta name="description" content="Cardápio e pedidos da Maria Julia Bolos e Doces">
 <title>Cardápio | Maria Julia Bolos e Doces</title>
 <style>
-:root{--pink:#e85d91;--deep:#bd286d;--ink:#64253f;--pale:#fff2f7}
-*{box-sizing:border-box}body{margin:0;background:#fff7fa;color:var(--ink);font:16px Arial,sans-serif}
-header{background:linear-gradient(135deg,#f879ad,#d12b78);color:white;text-align:center;padding:28px 16px 32px;border-radius:0 0 28px 28px}
-header h1{margin:0;font-size:clamp(24px,6vw,34px)}header p{margin:8px 0 0}
-main{max-width:760px;margin:auto;padding:18px 14px 38px}.panel{background:white;border:1px solid #ffe0eb;border-radius:22px;padding:18px;margin-bottom:16px;box-shadow:0 8px 24px #9e2d5b10}
-h2{margin:0 0 14px;font-size:21px}.intro{line-height:1.5;color:#91677a}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product{border:1px solid #f5d2e0;border-radius:17px;overflow:hidden;background:#fffafd}
-.photo{height:105px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff0f6,#ffe0ed);font-size:46px}
-.info{padding:12px;display:flex;flex-direction:column;gap:8px}.name{font-weight:700;line-height:1.25}.price{color:#d12b78;font-weight:700}
-.qty{display:flex;align-items:center;justify-content:space-between;gap:8px}.qty button{width:36px;height:36px;padding:0;font-size:22px;border-radius:10px}
-button{border:0;background:linear-gradient(135deg,#f35c9b,#d82f7b);color:white;font-weight:700;padding:13px;border-radius:13px;cursor:pointer}
-input,select,textarea{width:100%;padding:13px;border:1px solid #efc8d8;border-radius:12px;background:#fffafd;color:var(--ink);font:inherit;margin:5px 0 12px}
-label{font-size:14px;font-weight:700}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.summary{background:var(--pale);border-radius:14px;padding:14px;margin:12px 0}.summary-line{display:flex;justify-content:space-between;gap:10px;margin:6px 0}.total{font-size:20px;font-weight:700;color:#c83d78}
-.note{font-size:13px;color:#91677a;line-height:1.45}.status{margin-top:12px;line-height:1.5;font-weight:700}
-@media(max-width:380px){.grid{gap:8px}.photo{height:88px}.info{padding:10px}.row{grid-template-columns:1fr}}
+:root{--pink:#e85d91;--deep:#b82d6d;--light:#fff2f7;--brown:#642f35;--peach:#ffe2d7}
+*{box-sizing:border-box}
+body{margin:0;background:#fff7fa;color:#49313b;font:16px Arial,sans-serif}
+header{background:linear-gradient(135deg,#f879ad,#d12b78);color:#fff;text-align:center;padding:24px 16px 26px;border-radius:0 0 20px 20px}
+header h1{font-size:clamp(22px,5vw,30px);margin:0 0 7px}
+header p{margin:0;font-size:13px}
+main{max-width:900px;margin:22px auto;padding:0 14px 28px}
+.panel{background:white;padding:16px;border:1px solid #f4dce6;border-radius:18px;box-shadow:0 5px 18px #7b254010;margin-bottom:16px}
+h2{font-size:20px;margin:0 0 8px;color:#74394e}
+.intro{font-size:13px;color:#8b6c79;line-height:1.5;margin:0 0 14px}
+.category{margin:18px 0 10px;padding-bottom:7px;border-bottom:2px dotted #f3a7c5;color:#78354e;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.product{border:1px solid #f1dce5;border-radius:13px;overflow:hidden;background:#fffafd;display:flex;flex-direction:column;min-width:0}
+.emoji{height:68px;background:linear-gradient(135deg,#ffe9f1,#ffd9e7);display:flex;align-items:center;justify-content:center;font-size:34px}
+.product-info{padding:10px;display:flex;flex-direction:column;gap:7px;flex:1}
+.product-name{font-weight:700;font-size:14px;line-height:1.35}
+.price{font-weight:700;color:#b82d6d;font-size:14px}
+.controls{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+.qty{font-weight:bold;min-width:20px;text-align:center;font-size:14px}
+.qtybtn{border:0;border-radius:8px;background:var(--pink);color:#fff;font-size:20px;width:34px;height:34px;cursor:pointer}
+.qtybtn:disabled{opacity:.35}
+small.note{display:block;color:#927987;font-size:12px;margin-top:8px}
+label{display:block;font-weight:700;font-size:13px;margin:11px 0 5px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #e8cfdc;border-radius:10px;background:#fffafd;color:#49313b;font:inherit;font-size:14px}
+textarea{resize:vertical}
+.summary{background:#fff0f6;border-radius:12px;padding:12px;margin:14px 0;font-size:14px}
+.sumrow{display:flex;justify-content:space-between;gap:12px;margin:6px 0}
+.sumrow.total{font-size:18px;font-weight:bold;color:#b82d6d;border-top:1px solid #f2cada;padding-top:8px}
+.submit{width:100%;border:0;border-radius:10px;background:linear-gradient(135deg,#f05d9c,#d12b78);color:#fff;font-weight:bold;padding:14px;cursor:pointer}
+.submit:disabled{opacity:.6}
+.status{font-size:13px;line-height:1.5;margin-top:10px}
+a{color:#9b426a}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body>
-<header><h1>🍰 Maria Julia Bolos e Doces</h1><p>Feito com carinho para você! 💗</p></header>
+<header>
+<h1>🍰 Maria Julia Bolos e Doces</h1>
+<p>Feito com carinho para você! 💗</p>
+</header>
 <main>
-<section class="panel"><h2>🍓 Nosso cardápio</h2><p class="intro">Escolha seus doces, informe seus dados e envie seu pedido. Os preços abaixo são os já cadastrados no painel administrativo.</p><div id="catalogo" class="grid"></div><p id="catalogStatus" class="note">Carregando cardápio…</p></section>
-<section class="panel"><h2>🛍️ Finalizar pedido</h2>
+<section class="panel">
+<h2>🍓 Nosso cardápio</h2>
+<p class="intro">Escolha os doces e sabores, informe as quantidades e envie seu pedido. Os sabores estão sujeitos à disponibilidade; a confeitaria confirmará seu pedido.</p>
+<div id="catalogo"></div>
+<small class="note">Os preços são os informados no cardápio da confeitaria. </small>
+</section>
+<section class="panel">
+<h2>🛍️ Finalizar pedido</h2>
 <form id="pedidoForm">
-<label for="nome">Seu nome</label><input id="nome" maxlength="100" autocomplete="name" required placeholder="Nome completo">
-<label for="whatsapp">WhatsApp</label><input id="whatsapp" maxlength="20" inputmode="tel" autocomplete="tel" required placeholder="(44) 99999-9999">
-<label for="tipoEntrega">Como deseja receber?</label><select id="tipoEntrega" required><option value="retirada">Retirada no local</option><option value="entrega">Entrega (valor a combinar)</option></select>
-<div id="enderecoCampos" hidden><label for="endereco">Endereço completo para entrega</label><input id="endereco" maxlength="200" placeholder="Rua, número, bairro e complemento"></div>
-<label for="observacoes">Observações (opcional)</label><textarea id="observacoes" maxlength="500" rows="3" placeholder="Sabores, recados ou outras informações"></textarea>
-<div class="summary"><div id="resumoItens" class="note">Selecione pelo menos um doce.</div><div class="summary-line"><span>Subtotal</span><strong id="subtotal">R$ 0,00</strong></div><div class="summary-line"><span>Entrega</span><strong id="entregaValor">A combinar</strong></div><div class="summary-line total"><span>Total</span><strong id="total">R$ 0,00</strong></div></div>
-<button id="enviar" type="submit" style="width:100%">Enviar pedido</button><div id="mensagem" class="status" role="status" aria-live="polite"></div>
-<p class="note">O pedido precisa ser confirmado pela confeitaria. A entrega será combinada com a equipe.</p>
-</form></section>
-<p style="text-align:center"><a href="./admin.html" style="color:#a8326b">Acesso administrativo</a></p>
+<label for="nome">Seu nome</label>
+<input id="nome" maxlength="100" autocomplete="name" required placeholder="Nome completo">
+<label for="whatsapp">WhatsApp</label>
+<input id="whatsapp" type="tel" maxlength="20" autocomplete="tel" required placeholder="(44) 99999-9999">
+<label for="tipoEntrega">Como deseja receber?</label>
+<select id="tipoEntrega" required>
+<option value="retirada">Retirada no local</option>
+<option value="entrega">Entrega — taxa de R$ 10,00</option>
+</select>
+<div id="enderecoCampos" hidden>
+<label for="endereco">Endereço para entrega</label>
+<input id="endereco" maxlength="250" placeholder="Rua, número e bairro">
+</div>
+<div class="summary">
+<div class="sumrow"><span>Itens selecionados</span><strong id="qtdItens">0</strong></div>
+<div class="sumrow"><span>Subtotal</span><strong id="subtotal">R$ 0,00</strong></div>
+<div class="sumrow"><span>Entrega</span><strong id="entregaValor">A combinar</strong></div>
+<div class="sumrow total"><span>Total do pedido</span><strong id="total">R$ 0,00</strong></div>
+</div>
+<button class="submit" id="enviar" type="submit">Enviar pedido</button>
+<p id="mensagem" class="status" role="status"></p>
+<p class="intro">O pedido só estará confirmado após o retorno da confeitaria. A taxa de entrega em Campo Mourão é de R$ 10,00.</p>
+</form>
+</section>
+<p style="text-align:center"><a href="./admin.html">Acesso administrativo</a></p>
 </main>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
-const firebaseConfig={apiKey:"AIzaSyBYOsyN7GbPImcOoydtUkDDCqjdeljmbc8",authDomain:"mj-confeitaria.firebaseapp.com",projectId:"mj-confeitaria",storageBucket:"mj-confeitaria.firebasestorage.app",messagingSenderId:"1019079862908",appId:"1:1019079862908:web:faf7dc61261af4c60837f9"};
-const db=getFirestore(initializeApp(firebaseConfig));
-let produtos=[{id:"brigadeiro",nome:"Brigadeiro",preco:3,emoji:"🍫",quantidade:0},{id:"beijinho",nome:"Beijinho",preco:3,emoji:"🥥",quantidade:0},{id:"bolo-pote",nome:"Bolo no pote",preco:8,emoji:"🍰",quantidade:0},{id:"trufa",nome:"Trufa",preco:5,emoji:"🍬",quantidade:0}];
-const brl=n=>Number(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBYOsyN7GbPImcOoydtUkDDCqjdeljmbc8",
+  authDomain: "mj-confeitaria.firebaseapp.com",
+  projectId: "mj-confeitaria",
+  storageBucket: "mj-confeitaria.firebasestorage.app",
+  messagingSenderId: "1019079862908",
+  appId: "1:1019079862908:web:faf7dc61261af4c60837f9"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const products = [
+ {id:"bombom_uva",name:"Bombom de Ninho com uva",price:12,cat:"🍓 Bombons e coxinhas",emoji:"🍇"},
+ {id:"bombom_morango",name:"Bombom de Ninho com morango",price:13,cat:"🍓 Bombons e coxinhas",emoji:"🍓"},
+ {id:"coxinha_ferrero",name:"Coxinha de morango tipo Ferrero",price:14,cat:"🍓 Bombons e coxinhas",emoji:"🍫"},
+ {id:"coxinha_nutella",name:"Coxinha de morango Ninho com Nutella",price:14,cat:"🍓 Bombons e coxinhas",emoji:"🍓"},
+ {id:"cone_brigadeiro",name:"Cone recheado — Brigadeiro",price:10,cat:"🍫 Cone recheado — R$ 10,00",emoji:"🍦"},
+ {id:"cone_maracuja_brigadeiro",name:"Cone recheado — Maracujá com brigadeiro",price:10,cat:"🍫 Cone recheado — R$ 10,00",emoji:"🍦"},
+ {id:"cone_dois_amores",name:"Cone recheado — Dois amores",price:10,cat:"🍫 Cone recheado — R$ 10,00",emoji:"🍦"},
+ {id:"cone_ninho",name:"Cone recheado — Leite Ninho",price:10,cat:"🍫 Cone recheado — R$ 10,00",emoji:"🍦"},
+ {id:"cone_ferrero",name:"Cone gourmet — Ferrero Rocher",price:14,cat:"✨ Cone gourmet — R$ 14,00",emoji:"🍫"},
+ {id:"cone_ninho_nutella",name:"Cone gourmet — Ninho com Nutella",price:14,cat:"✨ Cone gourmet — R$ 14,00",emoji:"🍫"},
+ {id:"cone_maracuja_nutella",name:"Cone gourmet — Maracujá com Nutella",price:14,cat:"✨ Cone gourmet — R$ 14,00",emoji:"🍫"},
+ {id:"cone_kinder",name:"Cone gourmet — Kinder Bueno",price:14,cat:"✨ Cone gourmet — R$ 14,00",emoji:"🍫"},
+ {id:"bolo_dois_amores",name:"Bolo de pote — Dois amores (200 a 210 g)",price:13,cat:"🍰 Bolo de pote — R$ 13,00",emoji:"🍰"},
+ {id:"bolo_maracuja",name:"Bolo de pote — Maracujá (200 a 210 g)",price:13,cat:"🍰 Bolo de pote — R$ 13,00",emoji:"🍰"},
+ {id:"bolo_maracuja_brigadeiro",name:"Bolo de pote — Maracujá com brigadeiro (200 a 210 g)",price:13,cat:"🍰 Bolo de pote — R$ 13,00",emoji:"🍰"},
+ {id:"bolo_brigadeiro",name:"Bolo de pote — Brigadeiro (200 a 210 g)",price:13,cat:"🍰 Bolo de pote — R$ 13,00",emoji:"🍰"},
+ {id:"bolo_ninho",name:"Bolo de pote — Leite Ninho (200 a 210 g)",price:13,cat:"🍰 Bolo de pote — R$ 13,00",emoji:"🍰"},
+ {id:"cacau_ferrero",name:"Cacau recheado — Ferrero Rocher",price:28,cat:"🍫 Cacau recheado — R$ 28,00",emoji:"🍫"},
+ {id:"cacau_ninho_nutella",name:"Cacau recheado — Ninho com Nutella",price:28,cat:"🍫 Cacau recheado — R$ 28,00",emoji:"🍫"},
+ {id:"cacau_maracuja_nutella",name:"Cacau recheado — Maracujá com Nutella",price:28,cat:"🍫 Cacau recheado — R$ 28,00",emoji:"🍫"},
+ {id:"cacau_ninho_uva",name:"Cacau recheado — Ninho com uva",price:28,cat:"🍫 Cacau recheado — R$ 28,00",emoji:"🍇"},
+ {id:"cacau_kinder",name:"Cacau recheado — Kinder Bueno",price:28,cat:"🍫 Cacau recheado — R$ 28,00",emoji:"🍫"},
+ {id:"cacau_cravejado",name:"Cacau recheado — Cravejado",price:28,cat:"🍫 Cacau recheado — R$ 28,00",emoji:"🍫"},
+ {id:"espeto_ninho_morango",name:"Espeto Ninho com morango",price:20,cat:"🍓 Espeto gourmet",emoji:"🍓"},
+ {id:"espeto_ninho_uva",name:"Espeto Ninho com uva",price:20,cat:"🍇 Espeto gourmet",emoji:"🍇"},
+ {id:"espeto_kinder",name:"Espeto Kinder Bueno",price:25,cat:"🍫 Espeto gourmet",emoji:"🍫"}
+];
+const quantities = Object.fromEntries(products.map(p=>[p.id,0]));
+const money = n => n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function render(){
- const root=document.getElementById("catalogo");
- root.innerHTML=produtos.map((p,i)=>`<article class="product"><div class="photo">${p.foto?`<img src="${esc(p.foto)}" alt="${esc(p.nome)}" style="width:100%;height:100%;object-fit:cover">`:p.emoji||"🧁"}</div><div class="info"><div class="name">${esc(p.nome)}</div><div class="price">${brl(p.preco)} cada</div><div class="qty"><button type="button" data-i="${i}" data-d="-1" aria-label="Diminuir ${esc(p.nome)}">−</button><output>${p.quantidade}</output><button type="button" data-i="${i}" data-d="1" aria-label="Adicionar ${esc(p.nome)}">+</button></div></div></article>`).join("");
- root.querySelectorAll("button[data-i]").forEach(b=>b.addEventListener("click",()=>{const p=produtos[Number(b.dataset.i)];p.quantidade=Math.max(0,p.quantidade+Number(b.dataset.d));render();resumo();}));
- document.getElementById("catalogStatus").textContent="Cardápio carregado. Selecione as quantidades desejadas.";
+ const catalog=document.getElementById("catalogo");
+ const cats=[...new Set(products.map(p=>p.cat))];
+ catalog.innerHTML=cats.map(cat=>`<h3 class="category">${esc(cat)}</h3><div class="grid">${products.filter(p=>p.cat===cat).map(p=>`<article class="product"><div class="emoji">${p.emoji}</div><div class="product-info"><div class="product-name">${esc(p.name)}</div><div class="price">${money(p.price)}</div><div class="controls"><button class="qtybtn" type="button" data-minus="${p.id}" aria-label="Diminuir ${esc(p.name)}">−</button><span class="qty" id="qty-${p.id}">0</span><button class="qtybtn" type="button" data-plus="${p.id}" aria-label="Aumentar ${esc(p.name)}">+</button></div></div></article>`).join("")}</div>`).join("");
+ catalog.querySelectorAll("[data-minus]").forEach(b=>b.addEventListener("click",()=>change(b.dataset.minus,-1)));
+ catalog.querySelectorAll("[data-plus]").forEach(b=>b.addEventListener("click",()=>change(b.dataset.plus,1)));
 }
-function resumo(){
- const escolhidos=produtos.filter(p=>p.quantidade>0), subtotal=escolhidos.reduce((s,p)=>s+p.quantidade*p.preco,0), entrega=document.getElementById("tipoEntrega").value==="entrega";
- document.getElementById("resumoItens").textContent=escolhidos.length?escolhidos.map(p=>p.quantidade+" × "+p.nome+" — "+brl(p.quantidade*p.preco)).join(" • "):"Selecione pelo menos um doce.";
- document.getElementById("subtotal").textContent=brl(subtotal);document.getElementById("entregaValor").textContent=entrega?"A combinar":"R$ 0,00";document.getElementById("total").textContent=entrega?brl(subtotal)+" + entrega":brl(subtotal);
+function change(id,delta){quantities[id]=Math.max(0,quantities[id]+delta);document.getElementById("qty-"+id).textContent=quantities[id];updateSummary();}
+function updateSummary(){
+ const chosen=products.filter(p=>quantities[p.id]>0);
+ const count=chosen.reduce((n,p)=>n+quantities[p.id],0);
+ const subtotal=chosen.reduce((n,p)=>n+p.price*quantities[p.id],0);
+ const taxaEntrega=document.getElementById("tipoEntrega").value==="entrega"?10:0;
+ document.getElementById("qtdItens").textContent=count;
+ document.getElementById("subtotal").textContent=money(subtotal);
+ document.getElementById("entregaValor").textContent=money(taxaEntrega);
+ document.getElementById("total").textContent=money(subtotal+taxaEntrega);
 }
-document.getElementById("tipoEntrega").addEventListener("change",()=>{document.getElementById("enderecoCampos").hidden=document.getElementById("tipoEntrega").value!=="entrega";resumo();});
-async function carregarCatalogo(){
- try{const snap=await getDocs(collection(db,"produtos"));if(!snap.empty){const remoto=snap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.ativo!==false&&p.nome&&Number.isFinite(Number(p.preco)));if(remoto.length)produtos=remoto.map((p,i)=>({id:p.id||String(i),nome:String(p.nome),preco:Number(p.preco),emoji:p.emoji||"🧁",foto:p.foto||p.imagem||"",quantidade:0}));}}
- catch(e){console.warn("Catálogo remoto indisponível; usando produtos iniciais.",e.code||e);}
- render();resumo();
-}
-document.getElementById("pedidoForm").addEventListener("submit",async ev=>{
- ev.preventDefault();const msg=document.getElementById("mensagem"),btn=document.getElementById("enviar"),itens=produtos.filter(p=>p.quantidade>0).map(p=>({nome:p.nome,quantidade:p.quantidade,precoUnitario:Number(p.preco)}));
- if(!itens.length){msg.textContent="Escolha pelo menos um doce antes de enviar.";return;}
- const nome=document.getElementById("nome").value.trim(),whatsapp=document.getElementById("whatsapp").value.trim(),tipoEntrega=document.getElementById("tipoEntrega").value,endereco=tipoEntrega==="entrega"?document.getElementById("endereco").value.trim():"";
+document.getElementById("tipoEntrega").addEventListener("change",e=>{document.getElementById("enderecoCampos").hidden=e.target.value!=="entrega";document.getElementById("endereco").required=e.target.value==="entrega";updateSummary();});
+document.getElementById("pedidoForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const btn=document.getElementById("enviar"), msg=document.getElementById("mensagem");
+ const chosen=products.filter(p=>quantities[p.id]>0);
+ if(!chosen.length){msg.textContent="Selecione pelo menos um doce.";return;}
+ const nome=document.getElementById("nome").value.trim(), whatsapp=document.getElementById("whatsapp").value.trim();
+ const tipoEntrega=document.getElementById("tipoEntrega").value;
+ const endereco=document.getElementById("endereco").value.trim();
  if(tipoEntrega==="entrega"&&!endereco){msg.textContent="Informe o endereço para entrega.";return;}
- const subtotal=itens.reduce((s,i)=>s+i.quantidade*i.precoUnitario,0);btn.disabled=true;btn.textContent="Enviando…";msg.textContent="";
+ const subtotal=chosen.reduce((n,p)=>n+p.price*quantities[p.id],0);
+ const itens=chosen.map(p=>({id:p.id,nome:p.name,quantidade:quantities[p.id],precoUnitario:p.price,subtotal:p.price*quantities[p.id]}));
+ btn.disabled=true;btn.textContent="Enviando pedido...";msg.textContent="";
  try{
-  await addDoc(collection(db,"pedidos"),{nome,whatsapp,telefone:whatsapp,itens,subtotal,entrega:0,total:subtotal,tipoEntrega,endereco:tipoEntrega==="entrega"?{rua:endereco,numero:"",bairro:"",complemento:""}:null,observacoes:document.getElementById("observacoes").value.trim(),status:"Aguardando análise",pagamento:"Pendente",criadoEm:new Date().toISOString(),criadoEmServidor:serverTimestamp()});
-  try{await addDoc(collection(db,"clientes_publicos"),{nome,whatsapp,criadoEm:new Date().toISOString()});}catch(e){console.warn("Cadastro auxiliar não sincronizado",e.code||e);}
-  msg.textContent="Pedido enviado! 💗 Aguarde a confirmação da confeitaria.";produtos.forEach(p=>p.quantidade=0);render();ev.target.reset();document.getElementById("enderecoCampos").hidden=true;resumo();
- }catch(e){console.error(e);msg.textContent="Não foi possível enviar o pedido ("+(e.code||"erro")+"). As permissões do Firestore podem precisar de ajuste.";}
- finally{btn.disabled=false;btn.textContent="Enviar pedido";}
+  const taxaEntrega=tipoEntrega==="entrega"?10:0;
+  await addDoc(collection(db,"pedidos"),{
+   nome,whatsapp,telefone:whatsapp,itens,subtotal,entrega:taxaEntrega,total:subtotal+taxaEntrega,
+   tipoEntrega,endereco:tipoEntrega==="entrega"?{rua:endereco,numero:"",bairro:"",complemento:""}:null,
+   
+   status:"Pendente",pagamento:"A combinar",criadoEm:serverTimestamp()
+  });
+  try{await addDoc(collection(db,"clientes_publicos"),{nome,whatsapp,criadoEm:serverTimestamp()});}catch(_){}
+  msg.textContent="Pedido enviado! A confeitaria precisa confirmar a disponibilidade. A taxa de entrega em Campo Mourão é R$ 10,00.";
+  for(const p of products){quantities[p.id]=0;document.getElementById("qty-"+p.id).textContent="0";}
+  e.target.reset();document.getElementById("enderecoCampos").hidden=true;document.getElementById("endereco").required=false;updateSummary();
+ }catch(err){
+  console.error(err);
+  msg.textContent="Não foi possível enviar o pedido. Confira a conexão e tente novamente. Se continuar, fale com a confeitaria pelo WhatsApp (44) 99962-3960.";
+ }finally{btn.disabled=false;btn.textContent="Enviar pedido";}
 });
-carregarCatalogo();
-</script></body></html>
+render();updateSummary();
+</script>
+</body>
+</html>
