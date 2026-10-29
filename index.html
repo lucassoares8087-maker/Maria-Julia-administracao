@@ -1,73 +1,84 @@
-
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#e85d91">
-  <title>Maria Julia Bolos e Doces</title>
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" href="./icon-192.png" type="image/png">
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #fff7fa;
-      color: #49313b;
-    }
-    header {
-      background: #e85d91;
-      color: white;
-      text-align: center;
-      padding: 30px 16px;
-    }
-    header h1 { margin: 0 0 8px; }
-    main {
-      max-width: 650px;
-      margin: 24px auto;
-      padding: 20px;
-    }
-    .aviso {
-      background: white;
-      padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 2px 10px #00000010;
-      line-height: 1.6;
-    }
-    a {
-      display: inline-block;
-      margin-top: 12px;
-      background: #e85d91;
-      color: white;
-      padding: 12px 18px;
-      border-radius: 9px;
-      text-decoration: none;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#e85d91">
+<meta name="description" content="Cardápio e pedidos da Maria Julia Bolos e Doces">
+<title>Cardápio | Maria Julia Bolos e Doces</title>
+<style>
+:root{--pink:#e85d91;--deep:#bd286d;--ink:#64253f;--pale:#fff2f7}
+*{box-sizing:border-box}body{margin:0;background:#fff7fa;color:var(--ink);font:16px Arial,sans-serif}
+header{background:linear-gradient(135deg,#f879ad,#d12b78);color:white;text-align:center;padding:28px 16px 32px;border-radius:0 0 28px 28px}
+header h1{margin:0;font-size:clamp(24px,6vw,34px)}header p{margin:8px 0 0}
+main{max-width:760px;margin:auto;padding:18px 14px 38px}.panel{background:white;border:1px solid #ffe0eb;border-radius:22px;padding:18px;margin-bottom:16px;box-shadow:0 8px 24px #9e2d5b10}
+h2{margin:0 0 14px;font-size:21px}.intro{line-height:1.5;color:#91677a}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product{border:1px solid #f5d2e0;border-radius:17px;overflow:hidden;background:#fffafd}
+.photo{height:105px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff0f6,#ffe0ed);font-size:46px}
+.info{padding:12px;display:flex;flex-direction:column;gap:8px}.name{font-weight:700;line-height:1.25}.price{color:#d12b78;font-weight:700}
+.qty{display:flex;align-items:center;justify-content:space-between;gap:8px}.qty button{width:36px;height:36px;padding:0;font-size:22px;border-radius:10px}
+button{border:0;background:linear-gradient(135deg,#f35c9b,#d82f7b);color:white;font-weight:700;padding:13px;border-radius:13px;cursor:pointer}
+input,select,textarea{width:100%;padding:13px;border:1px solid #efc8d8;border-radius:12px;background:#fffafd;color:var(--ink);font:inherit;margin:5px 0 12px}
+label{font-size:14px;font-weight:700}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.summary{background:var(--pale);border-radius:14px;padding:14px;margin:12px 0}.summary-line{display:flex;justify-content:space-between;gap:10px;margin:6px 0}.total{font-size:20px;font-weight:700;color:#c83d78}
+.note{font-size:13px;color:#91677a;line-height:1.45}.status{margin-top:12px;line-height:1.5;font-weight:700}
+@media(max-width:380px){.grid{gap:8px}.photo{height:88px}.info{padding:10px}.row{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-  <header>
-    <h1>🍰 Maria Julia Bolos e Doces</h1>
-    <p>Feito com carinho para você! 💗</p>
-  </header>
-
-  <main>
-    <section class="aviso">
-      <h2>Nosso cardápio</h2>
-      <p>
-        Estamos ajustando nosso cardápio online.
-        Em breve, você poderá consultar os doces
-        disponíveis e fazer seu pedido por aqui.
-      </p>
-      <p>
-        Enquanto isso, entre em contato com a confeitaria
-        pelo WhatsApp para consultar os produtos.
-      </p>
-      <a href="https://wa.me/" target="_blank" rel="noopener">
-        Falar com a confeitaria
-      </a>
-    </section>
-  </main>
-</body>
-</html>
+<header><h1>🍰 Maria Julia Bolos e Doces</h1><p>Feito com carinho para você! 💗</p></header>
+<main>
+<section class="panel"><h2>🍓 Nosso cardápio</h2><p class="intro">Escolha seus doces, informe seus dados e envie seu pedido. Os preços abaixo são os já cadastrados no painel administrativo.</p><div id="catalogo" class="grid"></div><p id="catalogStatus" class="note">Carregando cardápio…</p></section>
+<section class="panel"><h2>🛍️ Finalizar pedido</h2>
+<form id="pedidoForm">
+<label for="nome">Seu nome</label><input id="nome" maxlength="100" autocomplete="name" required placeholder="Nome completo">
+<label for="whatsapp">WhatsApp</label><input id="whatsapp" maxlength="20" inputmode="tel" autocomplete="tel" required placeholder="(44) 99999-9999">
+<label for="tipoEntrega">Como deseja receber?</label><select id="tipoEntrega" required><option value="retirada">Retirada no local</option><option value="entrega">Entrega (valor a combinar)</option></select>
+<div id="enderecoCampos" hidden><label for="endereco">Endereço completo para entrega</label><input id="endereco" maxlength="200" placeholder="Rua, número, bairro e complemento"></div>
+<label for="observacoes">Observações (opcional)</label><textarea id="observacoes" maxlength="500" rows="3" placeholder="Sabores, recados ou outras informações"></textarea>
+<div class="summary"><div id="resumoItens" class="note">Selecione pelo menos um doce.</div><div class="summary-line"><span>Subtotal</span><strong id="subtotal">R$ 0,00</strong></div><div class="summary-line"><span>Entrega</span><strong id="entregaValor">A combinar</strong></div><div class="summary-line total"><span>Total</span><strong id="total">R$ 0,00</strong></div></div>
+<button id="enviar" type="submit" style="width:100%">Enviar pedido</button><div id="mensagem" class="status" role="status" aria-live="polite"></div>
+<p class="note">O pedido precisa ser confirmado pela confeitaria. A entrega será combinada com a equipe.</p>
+</form></section>
+<p style="text-align:center"><a href="./admin.html" style="color:#a8326b">Acesso administrativo</a></p>
+</main>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyBYOsyN7GbPImcOoydtUkDDCqjdeljmbc8",authDomain:"mj-confeitaria.firebaseapp.com",projectId:"mj-confeitaria",storageBucket:"mj-confeitaria.firebasestorage.app",messagingSenderId:"1019079862908",appId:"1:1019079862908:web:faf7dc61261af4c60837f9"};
+const db=getFirestore(initializeApp(firebaseConfig));
+let produtos=[{id:"brigadeiro",nome:"Brigadeiro",preco:3,emoji:"🍫",quantidade:0},{id:"beijinho",nome:"Beijinho",preco:3,emoji:"🥥",quantidade:0},{id:"bolo-pote",nome:"Bolo no pote",preco:8,emoji:"🍰",quantidade:0},{id:"trufa",nome:"Trufa",preco:5,emoji:"🍬",quantidade:0}];
+const brl=n=>Number(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function render(){
+ const root=document.getElementById("catalogo");
+ root.innerHTML=produtos.map((p,i)=>`<article class="product"><div class="photo">${p.foto?`<img src="${esc(p.foto)}" alt="${esc(p.nome)}" style="width:100%;height:100%;object-fit:cover">`:p.emoji||"🧁"}</div><div class="info"><div class="name">${esc(p.nome)}</div><div class="price">${brl(p.preco)} cada</div><div class="qty"><button type="button" data-i="${i}" data-d="-1" aria-label="Diminuir ${esc(p.nome)}">−</button><output>${p.quantidade}</output><button type="button" data-i="${i}" data-d="1" aria-label="Adicionar ${esc(p.nome)}">+</button></div></div></article>`).join("");
+ root.querySelectorAll("button[data-i]").forEach(b=>b.addEventListener("click",()=>{const p=produtos[Number(b.dataset.i)];p.quantidade=Math.max(0,p.quantidade+Number(b.dataset.d));render();resumo();}));
+ document.getElementById("catalogStatus").textContent="Cardápio carregado. Selecione as quantidades desejadas.";
+}
+function resumo(){
+ const escolhidos=produtos.filter(p=>p.quantidade>0), subtotal=escolhidos.reduce((s,p)=>s+p.quantidade*p.preco,0), entrega=document.getElementById("tipoEntrega").value==="entrega";
+ document.getElementById("resumoItens").textContent=escolhidos.length?escolhidos.map(p=>p.quantidade+" × "+p.nome+" — "+brl(p.quantidade*p.preco)).join(" • "):"Selecione pelo menos um doce.";
+ document.getElementById("subtotal").textContent=brl(subtotal);document.getElementById("entregaValor").textContent=entrega?"A combinar":"R$ 0,00";document.getElementById("total").textContent=entrega?brl(subtotal)+" + entrega":brl(subtotal);
+}
+document.getElementById("tipoEntrega").addEventListener("change",()=>{document.getElementById("enderecoCampos").hidden=document.getElementById("tipoEntrega").value!=="entrega";resumo();});
+async function carregarCatalogo(){
+ try{const snap=await getDocs(collection(db,"produtos"));if(!snap.empty){const remoto=snap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.ativo!==false&&p.nome&&Number.isFinite(Number(p.preco)));if(remoto.length)produtos=remoto.map((p,i)=>({id:p.id||String(i),nome:String(p.nome),preco:Number(p.preco),emoji:p.emoji||"🧁",foto:p.foto||p.imagem||"",quantidade:0}));}}
+ catch(e){console.warn("Catálogo remoto indisponível; usando produtos iniciais.",e.code||e);}
+ render();resumo();
+}
+document.getElementById("pedidoForm").addEventListener("submit",async ev=>{
+ ev.preventDefault();const msg=document.getElementById("mensagem"),btn=document.getElementById("enviar"),itens=produtos.filter(p=>p.quantidade>0).map(p=>({nome:p.nome,quantidade:p.quantidade,precoUnitario:Number(p.preco)}));
+ if(!itens.length){msg.textContent="Escolha pelo menos um doce antes de enviar.";return;}
+ const nome=document.getElementById("nome").value.trim(),whatsapp=document.getElementById("whatsapp").value.trim(),tipoEntrega=document.getElementById("tipoEntrega").value,endereco=tipoEntrega==="entrega"?document.getElementById("endereco").value.trim():"";
+ if(tipoEntrega==="entrega"&&!endereco){msg.textContent="Informe o endereço para entrega.";return;}
+ const subtotal=itens.reduce((s,i)=>s+i.quantidade*i.precoUnitario,0);btn.disabled=true;btn.textContent="Enviando…";msg.textContent="";
+ try{
+  await addDoc(collection(db,"pedidos"),{nome,whatsapp,telefone:whatsapp,itens,subtotal,entrega:0,total:subtotal,tipoEntrega,endereco:tipoEntrega==="entrega"?{rua:endereco,numero:"",bairro:"",complemento:""}:null,observacoes:document.getElementById("observacoes").value.trim(),status:"Aguardando análise",pagamento:"Pendente",criadoEm:new Date().toISOString(),criadoEmServidor:serverTimestamp()});
+  try{await addDoc(collection(db,"clientes_publicos"),{nome,whatsapp,criadoEm:new Date().toISOString()});}catch(e){console.warn("Cadastro auxiliar não sincronizado",e.code||e);}
+  msg.textContent="Pedido enviado! 💗 Aguarde a confirmação da confeitaria.";produtos.forEach(p=>p.quantidade=0);render();ev.target.reset();document.getElementById("enderecoCampos").hidden=true;resumo();
+ }catch(e){console.error(e);msg.textContent="Não foi possível enviar o pedido ("+(e.code||"erro")+"). As permissões do Firestore podem precisar de ajuste.";}
+ finally{btn.disabled=false;btn.textContent="Enviar pedido";}
+});
+carregarCatalogo();
+</script></body></html>
