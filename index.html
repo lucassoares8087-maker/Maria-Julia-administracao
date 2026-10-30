@@ -162,12 +162,30 @@ document.getElementById("pedidoForm").addEventListener("submit",async e=>{
  btn.disabled=true;btn.textContent="Enviando pedido...";msg.textContent="";
  try{
   const taxaEntrega=tipoEntrega==="entrega"?10:0;
-  await addDoc(collection(db,"pedidos"),{
+  const pedidoRef = await addDoc(collection(db,"pedidos"),{
    nome,whatsapp,itens,subtotal,entrega:taxaEntrega,total:subtotal+taxaEntrega,
    tipoEntrega,endereco:tipoEntrega==="entrega"?{rua:endereco,numero:"",bairro:"",complemento:""}:null,
-   
    status:"Aguardando análise",pagamento:"Pendente",criadoEm:serverTimestamp()
   });
+
+  // O pedido é salvo primeiro. Em seguida, o Netlify tenta enviar a notificação push.
+  // Se o push falhar, o pedido continua salvo normalmente.
+  try{
+   const respostaPush = await fetch("/.netlify/functions/notify-new-order",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({orderId:pedidoRef.id})
+   });
+   if(!respostaPush.ok){
+    console.warn("Pedido salvo, mas a função de notificação respondeu:",respostaPush.status);
+   }else{
+    const resultadoPush = await respostaPush.json().catch(()=>({}));
+    console.info("Resultado da notificação push:",resultadoPush);
+   }
+  }catch(erroPush){
+   console.warn("Pedido salvo, mas não foi possível chamar a notificação push:",erroPush);
+  }
+
   try{await addDoc(collection(db,"clientes_publicos"),{nome,whatsapp,criadoEm:serverTimestamp()});}catch(_){}
   msg.textContent="Pedido enviado! A confeitaria precisa confirmar a disponibilidade. A taxa de entrega em Campo Mourão é R$ 10,00.";
   for(const p of products){quantities[p.id]=0;document.getElementById("qty-"+p.id).textContent="0";}
