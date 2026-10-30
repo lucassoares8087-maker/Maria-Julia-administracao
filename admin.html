@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,7 +12,7 @@
 <style>
  :root{--pink:#e9478b;--pink2:#cf2874;--light:#fff0f6;--dark:#64253f;--white:#fff;--rose:#f9cddd}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at 12% 8%,#ffe0ed 0,transparent 36%),radial-gradient(ellipse at 92% 30%,#ffeaf2 0,transparent 34%),linear-gradient(180deg,#fff7fa 0%,#fff0f6 100%);color:var(--dark);font-family:Arial,sans-serif;position:relative;min-height:100vh} body::before{content:'🍓  ✦  🧁  ✦  🍰';position:fixed;left:0;right:0;bottom:18px;text-align:center;font-size:clamp(20px,5vw,36px);letter-spacing:12px;opacity:.10;pointer-events:none;z-index:0} body>*{position:relative;z-index:1}
+body{margin:0;background:radial-gradient(ellipse at 12% 8%,#ffe0ed 0,transparent 36%),radial-gradient(ellipse at 92% 30%,#ffeaf2 0,transparent 34%),linear-gradient(180deg,#fff7fa 0%,#fff0f6 100%);color:var(--dark);font-family:Arial,sans-serif;position:relative;min-height:100vh} body::before{content:'🍓  ✦  🧁  ✦  🍰';position:fixed;left:0;right:0;bottom:18px;text-align:center;font-size:clamp(20px,5vw,36px);letter-spacing:12px;opacity:.10;pointer-events:none;z-index:0} body>*{position:relative;z-index:1} body::after{content:"";position:fixed;inset:0;background-image:var(--marca-dagua-url,none);background-repeat:no-repeat;background-position:center;background-size:min(78vw,520px) auto;opacity:var(--marca-dagua-opacidade,0);pointer-events:none;z-index:0}
 header{background:linear-gradient(135deg,#f45d9b 0%,#d12b78 100%);color:white;padding:25px 18px 28px;border-radius:0 0 30px 30px;box-shadow:0 8px 22px #c83d7830}
 header h1{margin:0;font-size:clamp(21px,5.2vw,30px);line-height:1.12;padding-right:78px}
 header p{margin:7px 0 0;font-size:clamp(14px,3.8vw,18px)}
@@ -149,6 +148,7 @@ nav button:active{transform:translateY(1px)}
 <button onclick="aba('inicio')"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 22 24 7l18 15"/><path d="M12 20v21h24V20"/><path d="M21 41V28h7v13"/></svg> Início</button>
 <button onclick="aba('clientes')"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="18" cy="15" r="7"/><circle cx="33" cy="18" r="5"/><path d="M5 39c0-8 5-13 13-13s13 5 13 13"/><path d="M30 28c7 0 12 4 13 11"/></svg> Clientes</button>
 <button onclick="aba('pedidos'); carregarPedidos()"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="7" width="32" height="34" rx="3"/><line x1="8" y1="16" x2="40" y2="16"/><line x1="16" y1="4" x2="16" y2="11"/><line x1="32" y1="4" x2="32" y2="11"/><line x1="15" y1="23" x2="20" y2="23"/><line x1="25" y1="23" x2="30" y2="23"/><line x1="15" y1="30" x2="20" y2="30"/><line x1="25" y1="30" x2="30" y2="30"/></svg> Pedidos</button>
+<button onclick="aba('personalizarCardapio'); carregarPersonalizacaoCardapio()"><span aria-hidden="true">🖼️</span> Personalizar cardápio</button>
 <button onclick="aba('disponibilidade'); carregarDisponibilidade()"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="8" width="36" height="34" rx="2"/><line x1="6" y1="17" x2="42" y2="17"/><line x1="15" y1="4" x2="15" y2="12"/><line x1="33" y1="4" x2="33" y2="12"/><line x1="14" y1="24" x2="14" y2="24"/><line x1="24" y1="24" x2="24" y2="24"/><line x1="34" y1="24" x2="34" y2="24"/><line x1="14" y1="32" x2="14" y2="32"/><line x1="24" y1="32" x2="24" y2="32"/><line x1="34" y1="32" x2="34" y2="32"/></svg> Disponibilidade</button>
 <button onclick="aba('historico')"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="8" width="28" height="35" rx="2"/><path d="M18 8V5h12v3"/><line x1="16" y1="18" x2="32" y2="18"/><line x1="16" y1="25" x2="32" y2="25"/><line x1="16" y1="32" x2="28" y2="32"/></svg> Histórico</button>
 <button onclick="aba('relatorios')"><svg class="menu-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 6v36h36"/><polyline points="12,32 21,23 28,28 39,13"/><polyline points="32,13 39,13 39,20"/></svg> Relatórios</button>
@@ -205,7 +205,7 @@ nav button:active{transform:translateY(1px)}
   <option value="Brigadeiro" data-preco="3">Brigadeiro</option>
   <option value="Beijinho" data-preco="3">Beijinho</option>
   <option value="Bolo no pote" data-preco="8">Bolo no pote</option>
-  <option value="Trufa" data-preco="5">Trufa</option>
+  <option value="Trufa" data-preco="5">HubTrufa</option>
 </select>
 <div class="row">
 <div><label>Valor (R$)</label><input id="valorCompra" type="number" min="0.01" step="0.01" placeholder="0,00"></div>
@@ -240,8 +240,8 @@ nav button:active{transform:translateY(1px)}
 
 <section id="disponibilidade" class="hidden">
  <div class="panel">
-  <h2>Disponibilidade dos doces</h2>
-  <p class="muted">Escolha a data e marque os doces que estarão disponíveis no cardápio dos clientes.</p>
+  <h2>Disponibilidade dos doces</h
+<p class="muted">Escolha a data e marque os doces que estarão disponíveis no cardápio dos clientes.</p>
   <label for="dataDisponibilidade">Data</label>
   <input id="dataDisponibilidade" type="date">
   <div id="listaDisponibilidade"></div>
@@ -250,11 +250,27 @@ nav button:active{transform:translateY(1px)}
  </div>
 </section>
 
-<section id="historico" class="hidden">
-<div class="panel"><h2>Histórico de movimentações</h2><div id="listaHistorico"></div></div>
-</section>
+ <section id="personalizarCardapio" class="hidden">
+ <div class="panel">
+  <h2>🖼️ Personalizar cardápio</h2>
+  <p class="muted">Escolha as imagens no celular e salve. A marca-d’água fica somente no painel administrativo.</p>
+  <h3>Marca-d’água do painel</h3>
+  <p class="muted">Selecione a foto da família e ajuste a transparência para não atrapalhar a leitura.</p>
+  <div id="previewMarcaDagua" style="margin:10px 0;padding:14px;border:1px dashed #e8a6c1;border-radius:14px;text-align:center;background:#fff7fa">Nenhuma marca-d’água carregada</div>
+  <label for="arquivoMarcaDagua">Foto da marca-d’água</label><input id="arquivoMarcaDagua" type="file" accept="image/*">
+  <label for="opacidadeMarcaDagua">Transparência da marca-d’água</label><input id="opacidadeMarcaDagua" type="range" min="3" max="20" value="8" style="padding:0">
+  <button type="button" onclick="salvarMarcaDagua()">Salvar marca-d’água</button><p id="msgMarcaDagua" class="muted" role="status"></p>
+  <hr style="border:0;border-top:1px solid #f4d6e2;margin:22px 0">
+  <h3>Fotos dos doces</h3><p class="muted">Escolha a foto de cada doce e toque em Salvar foto. Imagens de até 5 MB.</p>
+  <div id="listaFotosProdutos"></div><p id="msgFotosProdutos" class="muted" role="status"></p>
+ </div>
+ </section>
 
-<section id="relatorios" class="hidden">
+ <section id="historico" class="hidden">
+<div class="panel"><h2>Histórico de movimentações</h2><div id="listaHistorico"></div></div>
+ </section>
+
+ <section id="relatorios" class="hidden">
 <div class="panel">
 <h2>Relatório financeiro</h2>
 <p class="muted" id="dataRelatorio">Resumo de hoje</p>
@@ -267,9 +283,9 @@ nav button:active{transform:translateY(1px)}
 <div class="grafico-legenda"><span><i class="grafico-cor" style="background:#e85d91"></i>Compras</span><span><i class="grafico-cor" style="background:#39a875"></i>Pagamentos recebidos</span></div>
 <div id="graficoFinanceiro"><p class="muted">Carregando movimentações...</p></div>
 </div>
-</section>
+ </section>
 
-<section id="detalhe" class="hidden">
+ <section id="detalhe" class="hidden">
 <div class="panel">
 <h2 id="tituloDetalhe">Detalhes do cliente</h2>
 <div id="infoDetalhe"></div>
@@ -281,10 +297,11 @@ nav button:active{transform:translateY(1px)}
 <footer>MARIA JULIA BOLOS E DOCES • Controle financeiro</footer>
 </main>
 
-<script type="module">
+ <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, getDocs, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-storage.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBYOsyN7GbPImcOoydtUkDDCqjdeljmbc8",
   authDomain: "mj-confeitaria.firebaseapp.com",
@@ -296,6 +313,9 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp);
+const CARDAPIO_CONFIG_REF = doc(db, "configuracoes", "cardapio");
+let personalizacaoCardapio = { fotos: {}, marcaDagua: "", opacidadeMarcaDagua: 8 };
 // Alertas de pedidos: o navegador só libera som depois de um toque do usuário.
 let alertasPedidosAtivos = false;
 let idsPedidosConhecidos = null;
@@ -322,7 +342,7 @@ function tocarSomNovoPedido(){
   }catch(e){console.warn('Não foi possível tocar o alerta sonoro:',e);}
 }
 
-let temporizadorAvisoPedidoNovo = null;
+  let temporizadorAvisoPedidoNovo = null;
 function mostrarAvisoPedidoNovo(quantidade){
   const aviso = document.getElementById('avisoPedidoNovo');
   const texto = document.getElementById('textoAvisoPedidoNovo');
@@ -354,7 +374,7 @@ async function verificarNovosPedidos(){
         }
       }
     }
-    idsPedidosConhecidos = idsAtuais;
+   idsPedidosConhecidos = idsAtuais;
   }catch(e){console.warn('Não foi possível verificar novos pedidos:',e);}
 }
 async function ativarAlertasPedidos(){
@@ -374,6 +394,50 @@ async function ativarAlertasPedidos(){
     timerVerificarPedidos = setInterval(verificarNovosPedidos, 20000);
   }catch(e){console.warn(e);alert('Não foi possível ativar o som neste navegador. Confira as permissões do site.');}
 }
+const produtosParaFoto = [
+ ["bombom_uva","Bombom de Ninho com uva"],["bombom_morango","Bombom de Ninho com morango"],["coxinha_ferrero","Coxinha de morango tipo Ferrero"],["coxinha_nutella","Coxinha de morango Ninho com Nutella"],
+ ["cone_brigadeiro","Cone recheado — Brigadeiro"],["cone_maracuja_brigadeiro","Cone recheado — Maracujá com brigadeiro"],["cone_dois_amores","Cone recheado — Dois amores"],["cone_ninho","Cone recheado — Leite Ninho"],
+ ["cone_ferrero","Cone gourmet — Ferrero Rocher"],["cone_ninho_nutella","Cone gourmet — Ninho com Nutella"],["cone_maracuja_nutella","Cone gourmet — Maracujá com Nutella"],["cone_kinder","Cone gourmet — Kinder Bueno"],
+ ["bolo_dois_amores","Bolo de pote — Dois amores"],["bolo_maracuja","Bolo de pote — Maracujá"],["bolo_maracuja_brigadeiro","Bolo de pote — Maracujá com brigadeiro"],["bolo_brigadeiro","Bolo de pote — Brigadeiro"],["bolo_ninho","Bolo de pote — Leite Ninho"],
+ ["cacau_ferrero","Cacau recheado — Ferrero Rocher"],["cacau_ninho_nutella","Cacau recheado — Ninho com Nutella"],["cacau_maracuja_nutella","Cacau recheado — Maracujá com Nutella"],["cacau_ninho_uva","Cacau recheado — Ninho com uva"],["cacau_kinder","Cacau recheado — Kinder Bueno"],["cacau_cravejado","Cacau recheado — Cravejado"],
+ ["espeto_ninho_morango","Espeto Ninho com morango"],["espeto_ninho_uva","Espeto Ninho com uva"],["espeto_kinder","Espeto Kinder Bueno"]
+];
+function aplicarMarcaDagua(){
+ const url=personalizacaoCardapio.marcaDagua||"";
+ document.documentElement.style.setProperty("--marca-dagua-url",url?"url("+JSON.stringify(url)+")":"none");
+ document.documentElement.style.setProperty("--marca-dagua-opacidade",String(Number(personalizacaoCardapio.opacidadeMarcaDagua||8)/100));
+ const p=document.getElementById("previewMarcaDagua");
+ if(p)p.innerHTML=url?'<img alt="Prévia da marca-d’água" src="'+escapar(url)+'" style="max-width:100%;max-height:180px;object-fit:contain;opacity:.8;border-radius:10px">':"Nenhuma marca-d’água carregada";
+ const slider=document.getElementById("opacidadeMarcaDagua");if(slider)slider.value=personalizacaoCardapio.opacidadeMarcaDagua||8;
+}
+async function carregarPersonalizacaoCardapio(){
+ const lista=document.getElementById("listaFotosProdutos"),msg=document.getElementById("msgFotosProdutos");
+ if(!usuarioAutenticado){msg.textContent="Entre no painel para gerenciar imagens.";return;}
+ lista.innerHTML='<p class="muted">Carregando fotos salvas...</p>';
+ try{
+  const snap=await getDoc(CARDAPIO_CONFIG_REF);
+  personalizacaoCardapio=snap.exists()?Object.assign({fotos:{},marcaDagua:"",opacidadeMarcaDagua:8},snap.data()):{fotos:{},marcaDagua:"",opacidadeMarcaDagua:8};
+  aplicarMarcaDagua();
+  lista.innerHTML=produtosParaFoto.map(([id,nome])=>{const url=personalizacaoCardapio.fotos[id]||"";return '<div class="item" style="display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center"><div id="fotoPreview-'+id+'" style="width:70px;height:70px;border-radius:12px;background:#fff0f6;display:flex;align-items:center;justify-content:center;overflow:hidden">'+(url?'<img src="'+escapar(url)+'" alt="" style="width:100%;height:100%;object-fit:cover">':'🍰')+'</div><div><strong>'+escapar(nome)+'</strong><input type="file" accept="image/*" data-foto-produto="'+id+'" aria-label="Escolher foto para '+escapar(nome)+'" style="font-size:12px;padding:8px"><button type="button" class="secondary" onclick="salvarFotoProduto(\''+id+'\')">Salvar foto</button></div></div>';}).join("");
+  lista.querySelectorAll("[data-foto-produto]").forEach(input=>input.addEventListener("change",()=>{const file=input.files&&input.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{const pv=document.getElementById("fotoPreview-"+input.dataset.fotoProduto);pv.innerHTML='<img alt="Prévia" src="'+reader.result+'" style="width:100%;height:100%;object-fit:cover">';};reader.readAsDataURL(file);}));
+  msg.textContent="Escolha uma foto e toque em Salvar foto.";
+ }catch(e){console.error(e);lista.innerHTML="";msg.textContent="Não foi possível carregar ("+(e.code||"erro")+"). Confira as regras do Firestore.";}
+}
+async function enviarImagem(path,file){if(!file)throw new Error("Escolha uma imagem primeiro.");if(!file.type.startsWith("image/"))throw new Error("Escolha um arquivo de imagem.");if(file.size>5*1024*1024)throw new Error("A imagem precisa ter até 5 MB.");const destino=storageRef(storage,path);await uploadBytes(destino,file,{contentType:file.type});return await getDownloadURL(destino);}
+async function salvarFotoProduto(id){
+ const input=document.querySelector('[data-foto-produto="'+id+'"]'),msg=document.getElementById("msgFotosProdutos");
+ if(!input||!input.files||!input.files[0]){msg.textContent="Escolha uma foto para esse doce primeiro.";return;}
+ msg.textContent="Enviando foto...";
+ try{const url=await enviarImagem("cardapio/produtos/"+id+"-"+Date.now(),input.files[0]);personalizacaoCardapio.fotos=personalizacaoCardapio.fotos||{};personalizacaoCardapio.fotos[id]=url;await setDoc(CARDAPIO_CONFIG_REF,personalizacaoCardapio,{merge:true});const pv=document.getElementById("fotoPreview-"+id);if(pv)pv.innerHTML='<img alt="" src="'+url+'" style="width:100%;height:100%;object-fit:cover">';msg.textContent="Foto salva no Firebase. O cardápio público precisa estar integrado a essas configurações para exibi-la.";}
+ catch(e){console.error(e);msg.textContent="Falha ao salvar ("+(e.code||e.message||"erro")+"). Verifique se o Firebase Storage está ativado e as regras permitem envio.";}
+}
+async function salvarMarcaDagua(){
+ const input=document.getElementById("arquivoMarcaDagua"),msg=document.getElementById("msgMarcaDagua"),slider=document.getElementById("opacidadeMarcaDagua");msg.textContent="Salvando marca-d’água...";
+ try{let url=personalizacaoCardapio.marcaDagua||"";if(input.files&&input.files[0])url=await enviarImagem("cardapio/marca-dagua/"+Date.now(),input.files[0]);if(!url){msg.textContent="Escolha a foto da família primeiro.";return;}personalizacaoCardapio.marcaDagua=url;personalizacaoCardapio.opacidadeMarcaDagua=Number(slider.value||8);await setDoc(CARDAPIO_CONFIG_REF,personalizacaoCardapio,{merge:true});aplicarMarcaDagua();msg.textContent="Marca-d’água salva e aplicada ao painel.";}
+ catch(e){console.error(e);msg.textContent="Falha ao salvar ("+(e.code||e.message||"erro")+"). Verifique se o Firebase Storage está ativado e as regras permitem envio.";}
+}
+document.getElementById("opacidadeMarcaDagua")?.addEventListener("input",e=>{personalizacaoCardapio.opacidadeMarcaDagua=Number(e.target.value);aplicarMarcaDagua();});
+
 let usuarioAutenticado = null;
 let pedidosOnlineCache = [];
 let filaSalvamento = Promise.resolve();
@@ -411,7 +475,7 @@ if(!usuarioAutenticado)return alert('Entre no painel administrativo antes de cad
 // Evita duplicar o mesmo cadastro quando o telefone já existe.
 const existente=dados.clientes.find(c=>String(c.fone||'').replace(/\D/g,'').replace(/^55/,'')===telefoneLimpo.replace(/^55/,''));
 if(existente){
-  existente.nome=nome;
+ existente.nome=nome;
   existente.fone=fone;
 }else{
   dados.clientes.push({id:Date.now().toString()+Math.random().toString(16).slice(2),nome,fone});
@@ -598,75 +662,8 @@ document.getElementById('saldoRelatorio').textContent=reais(total);
 renderizarRelatorioFinanceiro();
 preencherSelects();
 if(usuarioAutenticado) atualizarFinanceiroPedidos();
-}
-
-function chaveNomeCliente(nome, telefone='') {
-  const normalizar = v => String(v||'').trim().toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
-  const fone = String(telefone||'').replace(/\D/g,'').replace(/^55/,'');
-  return fone ? 'fone:'+fone : 'nome:'+normalizar(nome);
-}
-function dataOrdemHistorico(valor) {
-  if(!valor) return 'Data não informada';
-  try { const d = valor.toDate ? valor.toDate() : new Date(valor); if(Number.isNaN(d.getTime())) return String(valor); return d.toLocaleString('pt-BR'); }
-  catch(e){ return String(valor); }
-}
-async function renderizarHistorico(){
-  const area=document.getElementById('listaHistorico');
-  if(!area) return;
-  area.innerHTML='<p class="muted">Carregando histórico...</p>';
-  const grupos=new Map();
-  const obterGrupo=(nome,fone)=>{
-    const key=chaveNomeCliente(nome,fone);
-    if(!grupos.has(key)) grupos.set(key,{key,nome:String(nome||'Cliente sem nome').trim(),fone:String(fone||''),eventos:[]});
-    const g=grupos.get(key);
-    if(!g.fone && fone) g.fone=String(fone);
-    return g;
-  };
-  for(const m of dados.movimentos||[]){
-    const c=(dados.clientes||[]).find(c=>c.id===m.cliente);
-    const g=obterGrupo(c?.nome||'Cliente removido',c?.fone||'');
-    g.eventos.push({data:String(m.data||''),descricao:String(m.descricao||'Movimentação'),valor:Number(m.valor)||0,tipo:m.tipo==='compra'?'compra':'pagamento',ordem:String(m.data||'')});
   }
-  if(usuarioAutenticado){
-    try{
-      const snap=await getDocs(query(collection(db,'pedidos'),orderBy('criadoEm','desc')));
-      snap.docs.forEach(d=>{
-        const p=d.data();
-        if(String(p.pagamento||'Pendente').toLowerCase()!=='pago') return;
-        const g=obterGrupo(p.nome||'Cliente',p.whatsapp||'');
-        const itens=Array.isArray(p.itens)?p.itens.map(i=>`${Number(i.quantidade)||0}x ${String(i.nome||'produto')}`).join(', '):'Pedido';
-        const data=dataOrdemHistorico(p.criadoEm);
-        g.eventos.push({data,descricao:'Pedido pago — '+itens,valor:Number(p.total)||0,tipo:'pedido-pago',ordem:p.criadoEm?.toDate?p.criadoEm.toDate().toISOString():String(p.criadoEm||'')});
-      });
-    }catch(e){ console.warn('Não foi possível carregar pedidos pagos para o histórico:',e); }
-  }
-  const lista=[...grupos.values()].filter(g=>g.eventos.length).map(g=>{
-    g.eventos.sort((a,b)=>String(b.ordem).localeCompare(String(a.ordem)));
-    g.ultima=g.eventos[0]?.data||'Data não informada';
-    return g;
-  }).sort((a,b)=>String(b.eventos[0]?.ordem||'').localeCompare(String(a.eventos[0]?.ordem||'')));
-  if(!lista.length){area.innerHTML='<p class="muted">Nenhuma movimentação ou pedido pago registrado.</p>';return;}
-  area.innerHTML=lista.map((g,i)=>{
-    const detalhes=g.eventos.map(e=>`<div class="item"><span class="muted">${escapar(e.data)}</span><br><strong>${escapar(e.descricao)}</strong><div class="money">${e.tipo==='compra'?'Compra: ':e.tipo==='pagamento'?'Pagamento recebido: ':'Pedido pago: '}${reais(e.valor)}</div></div>`).join('');
-    return `<details class="item historico-cliente"><summary style="cursor:pointer;list-style-position:inside"><strong>${escapar(g.nome)}</strong><div class="muted">Última movimentação: ${escapar(g.ultima)} • ${g.eventos.length} registro(s)</div></summary><div style="margin-top:12px">${g.fone?`<p class="muted">WhatsApp: ${escapar(g.fone)}</p>`:''}${detalhes}</div></details>`;
-  }).join('');
-}
-document.getElementById('dataCompra').value=new Date().toLocaleDateString('en-CA');
-document.getElementById('dataPagamento').value=new Date().toLocaleDateString('en-CA');
-  function escolherDoce(nome, preco) {
-  const campo = document.getElementById('descricaoCompra');
-  const valor = document.getElementById('valorCompra');
-
-  campo.value = nome;
-  valor.value = preco.toFixed(2);
-
-  document.querySelectorAll('.doce-opcao').forEach(botao => {
-    botao.classList.remove('active');
-  });
-
-  const selecionado = [...document.querySelectorAll('.doce-opcao')]
-    .find(botao => botao.getAttribute('onclick').includes(nome));
-
+  
   if (selecionado) selecionado.classList.add('active');
   }
 
@@ -750,7 +747,7 @@ Titular: DAYELLEN FERNANDA PETERLINI MEDEIROS
 Após realizar o pagamento, envie o comprovante por aqui mesmo no WhatsApp para conferirmos o recebimento. O pedido só será marcado como pago após a confirmação do recebimento.
 
 Obrigada por escolher a MARIA JULIA BOLOS E DOCES! 🍫🍓`;
-    window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(mensagem),'_blank','noopener');
+   window.open('https://wa.me/'+numero+'?text='+encodeURIComponent(mensagem),'_blank','noopener');
   }catch(e){console.error(e);alert('Não foi possível preparar a mensagem. ('+(e.code||'erro')+')');}
 }
 
@@ -854,7 +851,7 @@ async function carregarDisponibilidade(){
   }).join('');
   document.getElementById('msgDisponibilidade').textContent=snap.exists()?'Disponibilidade salva carregada.':'Ainda não há configuração para esta data; todos começam disponíveis.';
  }catch(e){area.innerHTML='<p>Não foi possível carregar. ('+escapar(e.code||'erro')+')</p>';}
-}
+  }
 async function salvarDisponibilidade(){
  if(!usuarioAutenticado)return alert('Entre no painel administrativo.');
  const data=document.getElementById('dataDisponibilidade').value;
@@ -910,7 +907,7 @@ async function importarClientesDosPedidos(){
     console.error('Não foi possível importar automaticamente os clientes:',e);
     // O pedido continua disponível na aba Pedidos; não interrompe o acesso ao painel.
   }
-}
+ }
 
 onAuthStateChanged(auth, async user => {
   if(!user){ usuarioAutenticado = null; document.body.classList.remove('autenticado'); mensagemLogin('Entre com o e-mail administrativo.'); return; }
@@ -941,7 +938,7 @@ onAuthStateChanged(auth, async user => {
   }
 });
 // O HTML usa onclick nos botões; exponha as funções para que continuem funcionando como antes.
-Object.assign(window, { carregarDisponibilidade, salvarDisponibilidade, carregarPedidos, ativarAlertasPedidos, alterarStatusPedido, marcarPedidoComoPago, enviarPixWhatsApp, obterTelefoneDoCliente, salvar, reais, escapar, saldo, aba, cadastrarCliente, preencherSelects, atualizarPrecoDoce, alternarDoce, alterarQuantidade, atualizarResumoDoces, cadastrarCompra, mostrarSaldo, cadastrarPagamento, listarClientes, abrirCliente, mostrarDetalhe, atualizar, atualizarFinanceiroPedidos, renderizarHistorico, escolherDoce });
+Object.assign(window, { carregarPersonalizacaoCardapio, salvarFotoProduto, salvarMarcaDagua, carregarDisponibilidade, salvarDisponibilidade, carregarPedidos, ativarAlertasPedidos, alterarStatusPedido, marcarPedidoComoPago, enviarPixWhatsApp, obterTelefoneDoCliente, salvar, reais, escapar, saldo, aba, cadastrarCliente, preencherSelects, atualizarPrecoDoce, alternarDoce, alterarQuantidade, atualizarResumoDoces, cadastrarCompra, mostrarSaldo, cadastrarPagamento, listarClientes, abrirCliente, mostrarDetalhe, atualizar, atualizarFinanceiroPedidos, renderizarHistorico, escolherDoce });
 
 </script>
 
