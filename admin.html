@@ -460,7 +460,7 @@ function escapar(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<'
 function saldo(id){return dados.movimentos.filter(m=>m.cliente===id).reduce((s,m)=>s+(m.tipo==='compra'?m.valor:-m.valor),0)}
 function aba(id){
 document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
+const destino=document.getElementById(id); if(!destino) return; destino.classList.remove('hidden');
 if(id==='novaCompra'||id==='pagamento')preencherSelects();
 if(id==='pagamento')mostrarSaldo();
 if(id==='detalhe')mostrarDetalhe();
@@ -651,6 +651,24 @@ async function atualizarFinanceiroPedidos(){
     renderizarRelatorioFinanceiro();
   }catch(e){ console.error('Não foi possível atualizar o financeiro dos pedidos:',e); renderizarRelatorioFinanceiro(); }
 }
+function renderizarHistorico(){
+  const area = document.getElementById('listaHistorico');
+  if(!area) return;
+  const movimentos = Array.isArray(dados?.movimentos) ? dados.movimentos.slice() : [];
+  movimentos.sort((a,b) => String(b.data||'').localeCompare(String(a.data||'')) || Number(b.id||0)-Number(a.id||0));
+  if(!movimentos.length){
+    area.innerHTML = '<p class="muted">Nenhuma movimentação registrada.</p>';
+    return;
+  }
+  area.innerHTML = movimentos.map(m => {
+    const cliente = dados.clientes.find(c => c.id === m.cliente);
+    const nome = cliente ? cliente.nome : 'Cliente não encontrado';
+    const compra = m.tipo === 'compra';
+    const sinal = compra ? '+ ' : '− ';
+    return `<div class="item"><strong>${escapar(nome)}</strong><div class="muted">${escapar(dataISO(m.data) ? new Date(dataISO(m.data)+'T12:00:00').toLocaleDateString('pt-BR') : 'Data não informada')}</div><div>${escapar(m.descricao || (compra ? 'Compra' : 'Pagamento'))}</div><span class="money">${sinal}${reais(m.valor)}</span></div>`;
+  }).join('');
+}
+
 function atualizar(){
 let total=dados.clientes.reduce((s,c)=>s+Math.max(0,saldo(c.id)),0);
 document.getElementById('total').textContent=reais(total);
@@ -662,10 +680,7 @@ document.getElementById('saldoRelatorio').textContent=reais(total);
 renderizarRelatorioFinanceiro();
 preencherSelects();
 if(usuarioAutenticado) atualizarFinanceiroPedidos();
-  }
-  
-  if (selecionado) selecionado.classList.add('active');
-  }
+}
 
 function formatarDataPedido(valor){
   try { if(!valor) return 'Data não informada'; const d = valor.toDate ? valor.toDate() : new Date(valor); return d.toLocaleString('pt-BR'); }
@@ -938,7 +953,7 @@ onAuthStateChanged(auth, async user => {
   }
 });
 // O HTML usa onclick nos botões; exponha as funções para que continuem funcionando como antes.
-Object.assign(window, { carregarPersonalizacaoCardapio, salvarFotoProduto, salvarMarcaDagua, carregarDisponibilidade, salvarDisponibilidade, carregarPedidos, ativarAlertasPedidos, alterarStatusPedido, marcarPedidoComoPago, enviarPixWhatsApp, obterTelefoneDoCliente, salvar, reais, escapar, saldo, aba, cadastrarCliente, preencherSelects, atualizarPrecoDoce, alternarDoce, alterarQuantidade, atualizarResumoDoces, cadastrarCompra, mostrarSaldo, cadastrarPagamento, listarClientes, abrirCliente, mostrarDetalhe, atualizar, atualizarFinanceiroPedidos, renderizarHistorico, escolherDoce });
+Object.assign(window, { fecharAvisoPedidoNovo, carregarPersonalizacaoCardapio, salvarFotoProduto, salvarMarcaDagua, carregarDisponibilidade, salvarDisponibilidade, carregarPedidos, ativarAlertasPedidos, alterarStatusPedido, marcarPedidoComoPago, enviarPixWhatsApp, obterTelefoneDoCliente, salvar, reais, escapar, saldo, aba, cadastrarCliente, preencherSelects, atualizarPrecoDoce, alternarDoce, alterarQuantidade, atualizarResumoDoces, cadastrarCompra, mostrarSaldo, cadastrarPagamento, listarClientes, abrirCliente, mostrarDetalhe, atualizar, atualizarFinanceiroPedidos, renderizarHistorico });
 
 </script>
 
