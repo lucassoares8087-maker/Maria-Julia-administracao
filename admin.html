@@ -316,6 +316,8 @@ const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const storage = getStorage(firebaseApp);
 const VAPID_PUBLIC_KEY = 'BGMoSJhrHdGOhi-6qAQAIaV4GP4g63GPAVCFJXBIAnDKGsHRYIuipHLYr1z4InyShWpV8kS_DFfV0lxANQBdlTc';
+// As funções de push ficam hospedadas no Netlify, enquanto o app instalado usa GitHub Pages.
+const NETLIFY_FUNCTIONS_URL = 'https://mj-confeitaria-pedidos.netlify.app/.netlify/functions';
 let messaging = null;
 const CARDAPIO_CONFIG_REF = doc(db, "configuracoes", "cardapio");
 let personalizacaoCardapio = { fotos: {}, marcaDagua: "", opacidadeMarcaDagua: 8 };
@@ -395,7 +397,7 @@ async function registrarNotificacoesPush(){
   const token = await getToken(messaging, { vapidKey: VAPID_PUBLIC_KEY, serviceWorkerRegistration: registration });
   if(!token) throw new Error('O Firebase não retornou o token deste celular.');
   const idToken = await usuarioAutenticado.getIdToken();
-  const response = await fetch('/.netlify/functions/register-push', {
+  const response = await fetch(`${NETLIFY_FUNCTIONS_URL}/register-push`, {
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+idToken},
     body:JSON.stringify({token})
