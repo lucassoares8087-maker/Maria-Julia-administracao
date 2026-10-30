@@ -163,10 +163,10 @@ document.getElementById("pedidoForm").addEventListener("submit",async e=>{
  try{
   const taxaEntrega=tipoEntrega==="entrega"?10:0;
   await addDoc(collection(db,"pedidos"),{
-   nome,whatsapp,telefone:whatsapp,itens,subtotal,entrega:taxaEntrega,total:subtotal+taxaEntrega,
+   nome,whatsapp,itens,subtotal,entrega:taxaEntrega,total:subtotal+taxaEntrega,
    tipoEntrega,endereco:tipoEntrega==="entrega"?{rua:endereco,numero:"",bairro:"",complemento:""}:null,
    
-   status:"Pendente",pagamento:"A combinar",criadoEm:serverTimestamp()
+   status:"Pendente",pagamento:"Pendente",criadoEm:serverTimestamp()
   });
   try{await addDoc(collection(db,"clientes_publicos"),{nome,whatsapp,criadoEm:serverTimestamp()});}catch(_){}
   msg.textContent="Pedido enviado! A confeitaria precisa confirmar a disponibilidade. A taxa de entrega em Campo Mourão é R$ 10,00.";
