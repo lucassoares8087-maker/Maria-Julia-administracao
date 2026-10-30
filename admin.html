@@ -230,8 +230,8 @@ nav button:active{transform:translateY(1px)}
   <div class="panel">
     <h2>Pedidos do cardápio</h2>
     <p class="muted">Pedidos recebidos pelo cardápio online. Aceitar aqui não registra dívida automaticamente.</p>
-    <button type="button" id="btnAtivarAlerta" class="secondary" onclick="ativarAlertasPedidos()">🔔 Ativar som de novos pedidos</button>
-    <p id="estadoAlertaPedidos" class="muted" role="status">Ative o alerta com um toque. Mantenha o painel aberto para ouvir o som.</p>
+    <button type="button" id="btnAtivarAlerta" class="secondary" onclick="ativarAlertasPedidos()">🔔 Ativar notificações neste celular</button>
+    <p id="estadoAlertaPedidos" class="muted" role="status">Toque para permitir notificações mesmo com o painel em segundo plano.</p>
     <button type="button" onclick="carregarPedidos()">Atualizar pedidos</button>
     <div id="listaPedidos"><p class="muted">Toque em “Atualizar pedidos” para carregar.</p></div>
   </div>
@@ -302,6 +302,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebas
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, getDocs, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-storage.js";
+import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-messaging.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBYOsyN7GbPImcOoydtUkDDCqjdeljmbc8",
   authDomain: "mj-confeitaria.firebaseapp.com",
@@ -314,6 +315,8 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const storage = getStorage(firebaseApp);
+const VAPID_PUBLIC_KEY = 'BGMoSJhrHdGOhi-6qAQAIaV4GP4g63GPAVCFJXBIAnDKGsHRYIuipHLYr1z4InyShWpV8kS_DFfV0lxANQBdlTc';
+let messaging = null;
 const CARDAPIO_CONFIG_REF = doc(db, "configuracoes", "cardapio");
 let personalizacaoCardapio = { fotos: {}, marcaDagua: "", opacidadeMarcaDagua: 8 };
 // Alertas de pedidos: o navegador só libera som depois de um toque do usuário.
@@ -377,22 +380,62 @@ async function verificarNovosPedidos(){
    idsPedidosConhecidos = idsAtuais;
   }catch(e){console.warn('Não foi possível verificar novos pedidos:',e);}
 }
+async function registrarNotificacoesPush(){
+  const estado = document.getElementById('estadoAlertaPedidos');
+  const botao = document.getElementById('btnAtivarAlerta');
+  if(!usuarioAutenticado) throw new Error('Entre no painel administrativo antes de ativar as notificações.');
+  if(!('Notification' in window) || !('serviceWorker' in navigator)) throw new Error('Este navegador não oferece suporte a notificações push.');
+  if(!await isSupported()) throw new Error('O navegador não oferece suporte ao Firebase Messaging.');
+  if(estado) estado.textContent = 'Solicitando permissão para enviar notificações...';
+  const permissao = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
+  if(permissao !== 'granted') throw new Error('Permissão negada. Ative as notificações do site nas configurações do navegador.');
+  const registration = await navigator.serviceWorker.register('./service-worker.js');
+  await navigator.serviceWorker.ready;
+  messaging = messaging || getMessaging(firebaseApp);
+  const token = await getToken(messaging, { vapidKey: VAPID_PUBLIC_KEY, serviceWorkerRegistration: registration });
+  if(!token) throw new Error('O Firebase não retornou o token deste celular.');
+  const idToken = await usuarioAutenticado.getIdToken();
+  const response = await fetch('/.netlify/functions/register-push', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+idToken},
+    body:JSON.stringify({token})
+  });
+  const resultado = await response.json().catch(()=>({}));
+  if(!response.ok) throw new Error(resultado.error || 'O servidor não conseguiu registrar este celular.');
+  if(!window.__mjPushForegroundListener){
+    onMessage(messaging, payload => {
+      const data = payload.data || {};
+      tocarSomNovoPedido();
+      mostrarAvisoPedidoNovo(1);
+      if(estado) estado.textContent = data.body || '🔔 Chegou um novo pedido!';
+    });
+    window.__mjPushForegroundListener = true;
+  }
+  if(estado) estado.textContent = '✅ Notificações ativadas neste celular. Você poderá receber alertas mesmo com o painel fechado.';
+  if(botao) botao.textContent = '🔔 Notificações ativadas neste celular';
+}
 async function ativarAlertasPedidos(){
   try{
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     if(AudioCtx){ contextoAudioAlerta = contextoAudioAlerta || new AudioCtx(); await contextoAudioAlerta.resume(); tocarSomNovoPedido(); }
-    if('Notification' in window && Notification.permission === 'default'){
-      try{ await Notification.requestPermission(); }catch(e){}
+    let pushAtivo = false;
+    try {
+      await registrarNotificacoesPush();
+      pushAtivo = true;
+    } catch(pushErro) {
+      console.warn('Push não foi ativado; mantendo alerta com o painel aberto:', pushErro);
+      const estadoPush = document.getElementById('estadoAlertaPedidos');
+      if(estadoPush) estadoPush.textContent = 'Push não ativado: ' + (pushErro.message || 'erro') + '. O alerta com o painel aberto continuará funcionando.';
     }
     alertasPedidosAtivos = true;
     const estado = document.getElementById('estadoAlertaPedidos');
-    if(estado) estado.textContent = '🔔 Alerta ativado. Com o painel aberto, verificaremos novos pedidos automaticamente.';
+    if(estado) estado.textContent = pushAtivo ? '✅ Notificações push ativadas. O som e a verificação com o painel aberto também estão ativos.' : '🔔 Alerta com o painel aberto ativado. Para receber com o painel fechado, corrija a configuração de push indicada acima.';
     const botao = document.getElementById('btnAtivarAlerta');
     if(botao) botao.textContent = '🔔 Som de novos pedidos ativado';
     if(timerVerificarPedidos) clearInterval(timerVerificarPedidos);
     await verificarNovosPedidos();
     timerVerificarPedidos = setInterval(verificarNovosPedidos, 20000);
-  }catch(e){console.warn(e);alert('Não foi possível ativar o som neste navegador. Confira as permissões do site.');}
+  }catch(e){console.warn('Falha ao ativar notificações:',e);const estado=document.getElementById('estadoAlertaPedidos');if(estado)estado.textContent='Não foi possível ativar: '+(e.message||'erro desconhecido');}
 }
 const produtosParaFoto = [
  ["bombom_uva","Bombom de Ninho com uva"],["bombom_morango","Bombom de Ninho com morango"],["coxinha_ferrero","Coxinha de morango tipo Ferrero"],["coxinha_nutella","Coxinha de morango Ninho com Nutella"],
